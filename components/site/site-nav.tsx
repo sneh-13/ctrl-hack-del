@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown, History, LogOut } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 interface SiteNavProps {
-  current: "home" | "dashboard" | "coach" | "about" | "login" | "register";
+  current: "home" | "dashboard" | "coach" | "about" | "login" | "register" | "history";
   className?: string;
 }
 
@@ -40,7 +40,7 @@ export function SiteNav({ current, className }: SiteNavProps) {
   return (
     <nav
       className={cn(
-        "flex items-center justify-between rounded-2xl border border-slate-200 bg-white/92 px-4 py-3 shadow-sm backdrop-blur md:px-6",
+        "relative z-[200] flex items-center justify-between rounded-2xl border border-slate-200 bg-white/92 px-4 py-3 shadow-sm backdrop-blur md:px-6",
         className,
       )}
     >
@@ -80,11 +80,24 @@ export function SiteNav({ current, className }: SiteNavProps) {
             </button>
 
             {open && (
-              <div className="absolute right-0 top-full z-50 mt-1.5 w-40 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+              <div
+                className="absolute right-0 top-full z-[210] mt-1.5 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg"
+                onMouseDown={(event) => event.stopPropagation()}
+                onClick={(event) => event.stopPropagation()}
+              >
                 <div className="border-b border-slate-100 px-3 py-2.5">
                   <p className="text-xs font-medium text-slate-900">{session.user?.name}</p>
                   <p className="truncate text-xs text-slate-400">{session.user?.email}</p>
                 </div>
+                <button
+                  onClick={() => {
+                    window.location.assign("/history");
+                  }}
+                  className="flex w-full items-center gap-2 border-b border-slate-100 px-3 py-2.5 text-xs font-medium text-blue-600 transition-colors hover:bg-blue-50 md:text-sm"
+                >
+                  <History className="h-3.5 w-3.5" />
+                  View history
+                </button>
                 <button
                   onClick={() => {
                     setOpen(false);

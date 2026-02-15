@@ -1,0 +1,104 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { connectToDatabase } from "@/lib/mongodb";
+import DailyLog from "@/lib/models/DailyLog";
+import type { DailyLogs } from "@/types";
+
+interface DailyLogDocumentShape extends DailyLogs {
+  _id?: string;
+  userId?: string;
+  dayKey?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+function toDayKey(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toISOString().slice(0, 10);
+}
+
+function normalizeLog(log: DailyLogDocumentShape): DailyLogs {
+  return {
+    date: log.date,
+    sleepDurationHours: log.sleepDurationHours,
+    wakeTime: log.wakeTime,
+    stress: log.stress,
+    yesterdayWorkout: log.yesterdayWorkout ?? "",
+    lastSessionRpe: log.lastSessionRpe,
+    subjectiveSoreness: log.subjectiveSoreness,
+    muscleSoreness: log.muscleSoreness,
+  };
+}
+
+export async function GET() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  await connectToDatabase();
+
+  const logs = await DailyLog.find({ userId: session.user.id })
+    .sort({ date: -1 })
+    .lean<DailyLogDocumentShape[]>();
+
+  return NextResponse.json({ logs: logs.map(normalizeLog) });
+}
+
+export async function POST(req: NextRequest) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const payload = (await req.json()) as DailyLogs;
+
+  if (
+    !payload ||
+    typeof payload.date !== "string" ||
+    typeof payload.sleepDurationHours !== "number" ||
+    typeof payload.wakeTime !== "string" ||
+    typeof payload.stress !== "number" ||
+    typeof payload.lastSessionRpe !== "number" ||
+    typeof payload.subjectiveSoreness !== "number" ||
+    typeof payload.muscleSoreness !== "object"
+  ) {
+    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+  }
+
+  const dayKey = toDayKey(payload.date);
+
+  if (!dayKey) {
+    return NextResponse.json({ error: "Invalid log date" }, { status: 400 });
+  }
+
+  await connectToDatabase();
+
+  const saved = await DailyLog.findOneAndUpdate(
+    { userId: session.user.id, dayKey },
+    {
+      $set: {
+        userId: session.user.id,
+        dayKey,
+        date: payload.date,
+        sleepDurationHours: payload.sleepDurationHours,
+        wakeTime: payload.wakeTime,
+        stress: payload.stress,
+        yesterdayWorkout: payload.yesterdayWorkout,
+        lastSessionRpe: payload.lastSessionRpe,
+        subjectiveSoreness: payload.subjectiveSoreness,
+        muscleSoreness: payload.muscleSoreness,
+      },
+    },
+    {
+      upsert: true,
+      new: true,
+      setDefaultsOnInsert: true,
+    }
+  ).lean<DailyLogDocumentShape>();
+
+  return NextResponse.json({ log: normalizeLog(saved) }, { status: 201 });
+}

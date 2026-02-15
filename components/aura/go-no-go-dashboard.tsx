@@ -184,7 +184,7 @@ export function GoNoGoDashboard({
               </div>
 
               <p className="text-xs text-slate-500">
-                Data is mock-backed but typed for FastAPI integration via the shared models in <code>types.ts</code>.
+                Daily check-ins are saved to your account when signed in. Data models are shared in <code>types.ts</code>.
               </p>
             </CardContent>
           </Card>
