@@ -3,7 +3,8 @@
 import { useMemo, useState } from "react";
 import { CalendarClock } from "lucide-react";
 
-import { InteractiveBodyMap } from "@/components/aura/interactive-body-map";
+import { BodyMapDisplay } from "@/components/aura/body-map-display";
+import { MuscleGroupChecklist } from "@/components/aura/muscle-group-checklist";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
-import { emptyMuscleSoreness } from "@/lib/mock-data";
+import { MUSCLE_GROUPS, type StatusType } from "@/lib/bodymap-data";
 import type { DailyLogs, MuscleGroup, SorenessLevel, UserFitnessProfile } from "@/types";
 
 interface DailyCheckInModalProps {
@@ -34,10 +35,31 @@ type CheckInForm = {
   yesterdayWorkout: string;
   lastSessionRpe: number;
   subjectiveSoreness: number;
-  muscleSoreness: Record<MuscleGroup, SorenessLevel>;
+  statusByGroup: Record<string, StatusType | undefined>;
 };
 
+/** Map SorenessLevel (legacy) → StatusType */
+function levelToStatus(level: SorenessLevel): StatusType | undefined {
+  if (level === 2) return "sore";
+  if (level === 1) return "recovering";
+  return undefined;
+}
+
+/** Map StatusType → SorenessLevel for DailyLogs submission */
+function statusToLevel(status: StatusType | undefined): SorenessLevel {
+  if (status === "sore") return 2;
+  if (status === "recovering") return 1;
+  return 0;
+}
+
 function createInitialForm(profile: UserFitnessProfile, latestLog?: DailyLogs): CheckInForm {
+  const statusByGroup: Record<string, StatusType | undefined> = {};
+  if (latestLog?.muscleSoreness) {
+    for (const [key, level] of Object.entries(latestLog.muscleSoreness)) {
+      const status = levelToStatus(level as SorenessLevel);
+      if (status) statusByGroup[key] = status;
+    }
+  }
   return {
     sleepDurationHours: latestLog?.sleepDurationHours ?? profile.targetSleepHours,
     wakeTime: latestLog?.wakeTime ?? profile.wakeTime,
@@ -45,20 +67,28 @@ function createInitialForm(profile: UserFitnessProfile, latestLog?: DailyLogs): 
     yesterdayWorkout: latestLog?.yesterdayWorkout ?? "",
     lastSessionRpe: latestLog?.lastSessionRpe ?? 7,
     subjectiveSoreness: latestLog?.subjectiveSoreness ?? 4,
-    muscleSoreness: latestLog?.muscleSoreness ?? { ...emptyMuscleSoreness },
+    statusByGroup,
   };
 }
 
-function sorenessToSubjective(muscleSoreness: Record<MuscleGroup, SorenessLevel>) {
-  const values = Object.values(muscleSoreness);
-  const total = values.reduce<number>((acc, value) => acc + value, 0);
-  const average = values.length > 0 ? total / values.length : 0;
-  return Math.round(average * 5);
+function sorenessToSubjective(statusByGroup: Record<string, StatusType | undefined>) {
+  const total = MUSCLE_GROUPS.reduce<number>((acc, g) => acc + statusToLevel(statusByGroup[g.key]), 0);
+  return Math.round((total / MUSCLE_GROUPS.length) * 5);
 }
 
 export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckInModalProps) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<CheckInForm>(() => createInitialForm(profile, latestLog));
+  const [view, setView] = useState<"front" | "back">("front");
+  const [hoveredGroupKey, setHoveredGroupKey] = useState<string | null>(null);
+
+  /** Wrapper so MuscleGroupChecklist can update statusByGroup and auto-sync subjectiveSoreness */
+  const setStatusByGroup: React.Dispatch<React.SetStateAction<Record<string, StatusType | undefined>>> = (action) => {
+    setForm((prev) => {
+      const next = typeof action === "function" ? action(prev.statusByGroup) : action;
+      return { ...prev, statusByGroup: next, subjectiveSoreness: sorenessToSubjective(next) };
+    });
+  };
 
   const readinessHint = useMemo(() => {
     const sleepFactor = Math.max(0, 7.5 - form.sleepDurationHours) * 2;
@@ -75,6 +105,10 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
   };
 
   const submitCheckIn = () => {
+    const muscleSoreness = Object.fromEntries(
+      MUSCLE_GROUPS.map((g) => [g.key, statusToLevel(form.statusByGroup[g.key])])
+    ) as Record<MuscleGroup, SorenessLevel>;
+
     onSubmit({
       date: new Date().toISOString(),
       sleepDurationHours: form.sleepDurationHours,
@@ -83,7 +117,7 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
       yesterdayWorkout: form.yesterdayWorkout,
       lastSessionRpe: form.lastSessionRpe,
       subjectiveSoreness: form.subjectiveSoreness,
-      muscleSoreness: form.muscleSoreness,
+      muscleSoreness,
     });
 
     setOpen(false);
@@ -192,40 +226,54 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
                   }
                 />
               </div>
+
+              {/* ── Muscle Groups inline below sliders ── */}
+              <div className="space-y-2 pt-1">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  Muscle Groups
+                </p>
+                <MuscleGroupChecklist
+                  groups={MUSCLE_GROUPS}
+                  statusByGroup={form.statusByGroup}
+                  setStatusByGroup={setStatusByGroup}
+                  hoveredGroupKey={hoveredGroupKey}
+                  setHoveredGroupKey={setHoveredGroupKey}
+                />
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="yesterday-workout">Yesterday&apos;s Workout</Label>
-              <Textarea
-                id="yesterday-workout"
-                value={form.yesterdayWorkout}
-                onChange={(event) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    yesterdayWorkout: event.target.value,
-                  }))
-                }
-                className="min-h-[120px] border-slate-300 bg-white"
-                placeholder="Session type, key lifts, and notable fatigue..."
-              />
-            </div>
           </div>
 
           <div className="space-y-4">
-            <p className="text-sm text-slate-600">
-              Tap a region to toggle soreness state: Green (Recovered), Yellow (Recovering), Red (Sore).
-            </p>
+            {/* Front / Back toggle */}
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant={view === "front" ? "default" : "outline"}
+                className="h-8 flex-1 text-sm"
+                onClick={() => setView("front")}
+              >
+                Front
+              </Button>
+              <Button
+                type="button"
+                variant={view === "back" ? "default" : "outline"}
+                className="h-8 flex-1 text-sm"
+                onClick={() => setView("back")}
+              >
+                Back
+              </Button>
+            </div>
 
-            <InteractiveBodyMap
-              value={form.muscleSoreness}
-              onChange={(next) =>
-                setForm((prev) => ({
-                  ...prev,
-                  muscleSoreness: next,
-                  subjectiveSoreness: sorenessToSubjective(next),
-                }))
-              }
-            />
+            {/* Display-only body diagram */}
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
+              <BodyMapDisplay
+                view={view}
+                statusByGroup={form.statusByGroup}
+                hoveredGroupKey={hoveredGroupKey}
+                groups={MUSCLE_GROUPS}
+              />
+            </div>
 
             <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
               <p className="text-xs font-semibold tracking-[0.12em] text-slate-500 uppercase">Estimated Readiness (Pre-submit)</p>

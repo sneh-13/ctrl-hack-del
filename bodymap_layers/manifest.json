@@ -1,0 +1,2358 @@
+{
+  "front": [
+    {
+      "id": "front_001",
+      "file": "front/front_part_001.png",
+      "area": 30586,
+      "bbox": [
+        418,
+        19,
+        593,
+        250
+      ],
+      "centroid": [
+        504.9586739030929,
+        135.29912378212254
+      ],
+      "sourceLabel": 1
+    },
+    {
+      "id": "front_002",
+      "file": "front/front_part_002.png",
+      "area": 16569,
+      "bbox": [
+        349,
+        339,
+        498,
+        486
+      ],
+      "centroid": [
+        434.29392238517715,
+        413.0511799142978
+      ],
+      "sourceLabel": 13
+    },
+    {
+      "id": "front_003",
+      "file": "front/front_part_003.png",
+      "area": 16549,
+      "bbox": [
+        513,
+        339,
+        661,
+        485
+      ],
+      "centroid": [
+        575.4651036316394,
+        413.0741434527766
+      ],
+      "sourceLabel": 14
+    },
+    {
+      "id": "front_004",
+      "file": "front/front_part_004.png",
+      "area": 14071,
+      "bbox": [
+        363,
+        804,
+        443,
+        1212
+      ],
+      "centroid": [
+        404.5184421860564,
+        999.8582901002061
+      ],
+      "sourceLabel": 54
+    },
+    {
+      "id": "front_005",
+      "file": "front/front_part_005.png",
+      "area": 14022,
+      "bbox": [
+        570,
+        802,
+        648,
+        1212
+      ],
+      "centroid": [
+        606.674297532449,
+        999.5798744829553
+      ],
+      "sourceLabel": 48
+    },
+    {
+      "id": "front_006",
+      "file": "front/front_part_006.png",
+      "area": 8545,
+      "bbox": [
+        673,
+        441,
+        757,
+        594
+      ],
+      "centroid": [
+        716.9520187244002,
+        510.5325921591574
+      ],
+      "sourceLabel": 16
+    },
+    {
+      "id": "front_007",
+      "file": "front/front_part_007.png",
+      "area": 8531,
+      "bbox": [
+        254,
+        441,
+        338,
+        594
+      ],
+      "centroid": [
+        294.08814910327044,
+        510.67682569452586
+      ],
+      "sourceLabel": 15
+    },
+    {
+      "id": "front_008",
+      "file": "front/front_part_008.png",
+      "area": 6623,
+      "bbox": [
+        526,
+        1345,
+        566,
+        1605
+      ],
+      "centroid": [
+        547.8212290502794,
+        1465.7682319190699
+      ],
+      "sourceLabel": 83
+    },
+    {
+      "id": "front_009",
+      "file": "front/front_part_009.png",
+      "area": 6605,
+      "bbox": [
+        446,
+        1344,
+        486,
+        1609
+      ],
+      "centroid": [
+        463.3220287660863,
+        1465.9945495836487
+      ],
+      "sourceLabel": 82
+    },
+    {
+      "id": "front_010",
+      "file": "front/front_part_010.png",
+      "area": 6547,
+      "bbox": [
+        355,
+        938,
+        409,
+        1218
+      ],
+      "centroid": [
+        379.6577058194593,
+        1090.8512295707958
+      ],
+      "sourceLabel": 72
+    },
+    {
+      "id": "front_011",
+      "file": "front/front_part_011.png",
+      "area": 6540,
+      "bbox": [
+        603,
+        941,
+        657,
+        1218
+      ],
+      "centroid": [
+        631.4614678899082,
+        1090.8977064220182
+      ],
+      "sourceLabel": 74
+    },
+    {
+      "id": "front_012",
+      "file": "front/front_part_012.png",
+      "area": 6474,
+      "bbox": [
+        434,
+        686,
+        491,
+        846
+      ],
+      "centroid": [
+        466.17840593141796,
+        758.1818041396355
+      ],
+      "sourceLabel": 41
+    },
+    {
+      "id": "front_013",
+      "file": "front/front_part_013.png",
+      "area": 6473,
+      "bbox": [
+        522,
+        686,
+        580,
+        846
+      ],
+      "centroid": [
+        546.0313610381585,
+        757.9422215356094
+      ],
+      "sourceLabel": 42
+    },
+    {
+      "id": "front_014",
+      "file": "front/front_part_014.png",
+      "area": 5565,
+      "bbox": [
+        390,
+        799,
+        478,
+        1084
+      ],
+      "centroid": [
+        439.49559748427674,
+        936.0621743036837
+      ],
+      "sourceLabel": 47
+    },
+    {
+      "id": "front_015",
+      "file": "front/front_part_015.png",
+      "area": 5531,
+      "bbox": [
+        534,
+        803,
+        621,
+        1078
+      ],
+      "centroid": [
+        571.7667691195082,
+        935.4664617609835
+      ],
+      "sourceLabel": 53
+    },
+    {
+      "id": "front_016",
+      "file": "front/front_part_016.png",
+      "area": 3955,
+      "bbox": [
+        388,
+        1307,
+        457,
+        1637
+      ],
+      "centroid": [
+        416.2184576485461,
+        1439.4932996207333
+      ],
+      "sourceLabel": 80
+    },
+    {
+      "id": "front_017",
+      "file": "front/front_part_017.png",
+      "area": 3932,
+      "bbox": [
+        556,
+        1307,
+        625,
+        1637
+      ],
+      "centroid": [
+        595.5971515768057,
+        1439.1589521871822
+      ],
+      "sourceLabel": 81
+    },
+    {
+      "id": "front_018",
+      "file": "front/front_part_018.png",
+      "area": 3872,
+      "bbox": [
+        93,
+        840,
+        157,
+        932
+      ],
+      "centroid": [
+        128.8228305785124,
+        884.3595041322315
+      ],
+      "sourceLabel": 60
+    },
+    {
+      "id": "front_019",
+      "file": "front/front_part_019.png",
+      "area": 3862,
+      "bbox": [
+        151,
+        608,
+        256,
+        810
+      ],
+      "centroid": [
+        214.00906266183324,
+        685.1079751424132
+      ],
+      "sourceLabel": 33
+    },
+    {
+      "id": "front_020",
+      "file": "front/front_part_020.png",
+      "area": 3862,
+      "bbox": [
+        756,
+        609,
+        862,
+        812
+      ],
+      "centroid": [
+        797.2578974624547,
+        685.4083376488866
+      ],
+      "sourceLabel": 34
+    },
+    {
+      "id": "front_021",
+      "file": "front/front_part_021.png",
+      "area": 3850,
+      "bbox": [
+        856,
+        840,
+        919,
+        932
+      ],
+      "centroid": [
+        882.392987012987,
+        884.332987012987
+      ],
+      "sourceLabel": 61
+    },
+    {
+      "id": "front_022",
+      "file": "front/front_part_022.png",
+      "area": 3739,
+      "bbox": [
+        294,
+        329,
+        385,
+        433
+      ],
+      "centroid": [
+        339.38379245787644,
+        382.15672639743246
+      ],
+      "sourceLabel": 11
+    },
+    {
+      "id": "front_023",
+      "file": "front/front_part_023.png",
+      "area": 3738,
+      "bbox": [
+        628,
+        329,
+        720,
+        433
+      ],
+      "centroid": [
+        672.8298555377207,
+        382.2180310326378
+      ],
+      "sourceLabel": 12
+    },
+    {
+      "id": "front_024",
+      "file": "front/front_part_024.png",
+      "area": 3445,
+      "bbox": [
+        591,
+        640,
+        621,
+        782
+      ],
+      "centroid": [
+        607.1483309143687,
+        715.5390420899855
+      ],
+      "sourceLabel": 40
+    },
+    {
+      "id": "front_025",
+      "file": "front/front_part_025.png",
+      "area": 3433,
+      "bbox": [
+        390,
+        639,
+        422,
+        782
+      ],
+      "centroid": [
+        404.04806291872995,
+        716.2837168657151
+      ],
+      "sourceLabel": 39
+    },
+    {
+      "id": "front_026",
+      "file": "front/front_part_026.png",
+      "area": 3201,
+      "bbox": [
+        446,
+        1041,
+        473,
+        1224
+      ],
+      "centroid": [
+        459.1074664167448,
+        1146.3520774757887
+      ],
+      "sourceLabel": 77
+    },
+    {
+      "id": "front_027",
+      "file": "front/front_part_027.png",
+      "area": 3193,
+      "bbox": [
+        540,
+        1038,
+        566,
+        1224
+      ],
+      "centroid": [
+        552.1171312245538,
+        1147.2173504541183
+      ],
+      "sourceLabel": 76
+    },
+    {
+      "id": "front_028",
+      "file": "front/front_part_028.png",
+      "area": 2958,
+      "bbox": [
+        520,
+        621,
+        584,
+        678
+      ],
+      "centroid": [
+        549.6727518593644,
+        647.5378634212306
+      ],
+      "sourceLabel": 36
+    },
+    {
+      "id": "front_029",
+      "file": "front/front_part_029.png",
+      "area": 2938,
+      "bbox": [
+        429,
+        621,
+        493,
+        678
+      ],
+      "centroid": [
+        462.1878829135466,
+        647.5599046970729
+      ],
+      "sourceLabel": 35
+    },
+    {
+      "id": "front_030",
+      "file": "front/front_part_030.png",
+      "area": 2761,
+      "bbox": [
+        519,
+        552,
+        583,
+        607
+      ],
+      "centroid": [
+        548.2868525896414,
+        579.5708076783774
+      ],
+      "sourceLabel": 30
+    },
+    {
+      "id": "front_031",
+      "file": "front/front_part_031.png",
+      "area": 2760,
+      "bbox": [
+        430,
+        551,
+        495,
+        607
+      ],
+      "centroid": [
+        463.8710144927536,
+        579.5293478260869
+      ],
+      "sourceLabel": 29
+    },
+    {
+      "id": "front_032",
+      "file": "front/front_part_032.png",
+      "area": 2665,
+      "bbox": [
+        571,
+        1363,
+        631,
+        1626
+      ],
+      "centroid": [
+        606.5575984990619,
+        1481.6270168855535
+      ],
+      "sourceLabel": 84
+    },
+    {
+      "id": "front_033",
+      "file": "front/front_part_033.png",
+      "area": 2635,
+      "bbox": [
+        382,
+        1369,
+        440,
+        1625
+      ],
+      "centroid": [
+        404.773055028463,
+        1482.6576850094877
+      ],
+      "sourceLabel": 85
+    },
+    {
+      "id": "front_034",
+      "file": "front/front_part_034.png",
+      "area": 2504,
+      "bbox": [
+        410,
+        803,
+        484,
+        919
+      ],
+      "centroid": [
+        453.8083067092652,
+        862.5862619808307
+      ],
+      "sourceLabel": 51
+    },
+    {
+      "id": "front_035",
+      "file": "front/front_part_035.png",
+      "area": 2502,
+      "bbox": [
+        528,
+        803,
+        602,
+        920
+      ],
+      "centroid": [
+        557.4372501998402,
+        862.3920863309353
+      ],
+      "sourceLabel": 52
+    },
+    {
+      "id": "front_036",
+      "file": "front/front_part_036.png",
+      "area": 2358,
+      "bbox": [
+        425,
+        1671,
+        471,
+        1768
+      ],
+      "centroid": [
+        448.3507209499576,
+        1717.5920271416455
+      ],
+      "sourceLabel": 88
+    },
+    {
+      "id": "front_037",
+      "file": "front/front_part_037.png",
+      "area": 2351,
+      "bbox": [
+        542,
+        1672,
+        587,
+        1769
+      ],
+      "centroid": [
+        562.906422798809,
+        1717.3602722245853
+      ],
+      "sourceLabel": 89
+    },
+    {
+      "id": "front_038",
+      "file": "front/front_part_038.png",
+      "area": 2083,
+      "bbox": [
+        430,
+        498,
+        495,
+        552
+      ],
+      "centroid": [
+        463.00720115218434,
+        520.2568410945752
+      ],
+      "sourceLabel": 21
+    },
+    {
+      "id": "front_039",
+      "file": "front/front_part_039.png",
+      "area": 2082,
+      "bbox": [
+        519,
+        498,
+        583,
+        553
+      ],
+      "centroid": [
+        549.1902017291067,
+        520.26176753122
+      ],
+      "sourceLabel": 22
+    },
+    {
+      "id": "front_040",
+      "file": "front/front_part_040.png",
+      "area": 2015,
+      "bbox": [
+        664,
+        322,
+        733,
+        419
+      ],
+      "centroid": [
+        708.5910669975186,
+        359.15334987593053
+      ],
+      "sourceLabel": 10
+    },
+    {
+      "id": "front_041",
+      "file": "front/front_part_041.png",
+      "area": 1990,
+      "bbox": [
+        387,
+        1739,
+        443,
+        1793
+      ],
+      "centroid": [
+        418.4281407035176,
+        1770.1618090452262
+      ],
+      "sourceLabel": 90
+    },
+    {
+      "id": "front_042",
+      "file": "front/front_part_042.png",
+      "area": 1987,
+      "bbox": [
+        281,
+        322,
+        349,
+        422
+      ],
+      "centroid": [
+        303.6497232008052,
+        359.03925515853047
+      ],
+      "sourceLabel": 9
+    },
+    {
+      "id": "front_043",
+      "file": "front/front_part_043.png",
+      "area": 1971,
+      "bbox": [
+        570,
+        1739,
+        625,
+        1793
+      ],
+      "centroid": [
+        592.7447995941146,
+        1770.1283612379502
+      ],
+      "sourceLabel": 91
+    },
+    {
+      "id": "front_044",
+      "file": "front/front_part_044.png",
+      "area": 1729,
+      "bbox": [
+        468,
+        877,
+        498,
+        996
+      ],
+      "centroid": [
+        484.63042220936956,
+        936.4644303065355
+      ],
+      "sourceLabel": 64
+    },
+    {
+      "id": "front_045",
+      "file": "front/front_part_045.png",
+      "area": 1698,
+      "bbox": [
+        514,
+        879,
+        543,
+        996
+      ],
+      "centroid": [
+        526.4740871613664,
+        936.3545347467609
+      ],
+      "sourceLabel": 65
+    },
+    {
+      "id": "front_046",
+      "file": "front/front_part_046.png",
+      "area": 1416,
+      "bbox": [
+        457,
+        245,
+        498,
+        346
+      ],
+      "centroid": [
+        476.48728813559325,
+        295.579802259887
+      ],
+      "sourceLabel": 2
+    },
+    {
+      "id": "front_047",
+      "file": "front/front_part_047.png",
+      "area": 1400,
+      "bbox": [
+        513,
+        246,
+        554,
+        346
+      ],
+      "centroid": [
+        533.5235714285715,
+        295.49285714285713
+      ],
+      "sourceLabel": 3
+    },
+    {
+      "id": "front_048",
+      "file": "front/front_part_048.png",
+      "area": 1383,
+      "bbox": [
+        238,
+        633,
+        290,
+        696
+      ],
+      "centroid": [
+        268.6023138105568,
+        665.4801156905278
+      ],
+      "sourceLabel": 37
+    },
+    {
+      "id": "front_049",
+      "file": "front/front_part_049.png",
+      "area": 1364,
+      "bbox": [
+        722,
+        633,
+        774,
+        696
+      ],
+      "centroid": [
+        742.8775659824047,
+        665.6627565982404
+      ],
+      "sourceLabel": 38
+    },
+    {
+      "id": "front_050",
+      "file": "front/front_part_050.png",
+      "area": 1216,
+      "bbox": [
+        761,
+        703,
+        849,
+        812
+      ],
+      "centroid": [
+        802.8947368421053,
+        750.6167763157895
+      ],
+      "sourceLabel": 44
+    },
+    {
+      "id": "front_051",
+      "file": "front/front_part_051.png",
+      "area": 1208,
+      "bbox": [
+        162,
+        701,
+        252,
+        813
+      ],
+      "centroid": [
+        208.23509933774835,
+        750.6051324503311
+      ],
+      "sourceLabel": 43
+    },
+    {
+      "id": "front_052",
+      "file": "front/front_part_052.png",
+      "area": 1173,
+      "bbox": [
+        897,
+        843,
+        974,
+        890
+      ],
+      "centroid": [
+        934.311167945439,
+        868.6402387041774
+      ],
+      "sourceLabel": 63
+    },
+    {
+      "id": "front_053",
+      "file": "front/front_part_053.png",
+      "area": 1164,
+      "bbox": [
+        39,
+        843,
+        115,
+        890
+      ],
+      "centroid": [
+        76.7147766323024,
+        868.71735395189
+      ],
+      "sourceLabel": 62
+    },
+    {
+      "id": "front_054",
+      "file": "front/front_part_054.png",
+      "area": 1163,
+      "bbox": [
+        645,
+        458,
+        665,
+        559
+      ],
+      "centroid": [
+        653.975064488392,
+        511.5150472914875
+      ],
+      "sourceLabel": 17
+    },
+    {
+      "id": "front_055",
+      "file": "front/front_part_055.png",
+      "area": 1156,
+      "bbox": [
+        349,
+        459,
+        368,
+        559
+      ],
+      "centroid": [
+        358.18598615916954,
+        511.6020761245675
+      ],
+      "sourceLabel": 18
+    },
+    {
+      "id": "front_056",
+      "file": "front/front_part_056.png",
+      "area": 1154,
+      "bbox": [
+        382,
+        281,
+        447,
+        320
+      ],
+      "centroid": [
+        416.74523396880414,
+        302.315424610052
+      ],
+      "sourceLabel": 5
+    },
+    {
+      "id": "front_057",
+      "file": "front/front_part_057.png",
+      "area": 1144,
+      "bbox": [
+        560,
+        281,
+        626,
+        320
+      ],
+      "centroid": [
+        589.7631118881119,
+        302.29895104895104
+      ],
+      "sourceLabel": 6
+    },
+    {
+      "id": "front_058",
+      "file": "front/front_part_058.png",
+      "area": 1078,
+      "bbox": [
+        490,
+        258,
+        524,
+        315
+      ],
+      "centroid": [
+        506.71150278293135,
+        278.5630797773655
+      ],
+      "sourceLabel": 4
+    },
+    {
+      "id": "front_059",
+      "file": "front/front_part_059.png",
+      "area": 1060,
+      "bbox": [
+        438,
+        1246,
+        464,
+        1356
+      ],
+      "centroid": [
+        452.1801886792453,
+        1301.3669811320756
+      ],
+      "sourceLabel": 79
+    },
+    {
+      "id": "front_060",
+      "file": "front/front_part_060.png",
+      "area": 1055,
+      "bbox": [
+        548,
+        1242,
+        573,
+        1359
+      ],
+      "centroid": [
+        559.1838862559242,
+        1302.0398104265403
+      ],
+      "sourceLabel": 78
+    },
+    {
+      "id": "front_061",
+      "file": "front/front_part_061.png",
+      "area": 847,
+      "bbox": [
+        70,
+        921,
+        105,
+        996
+      ],
+      "centroid": [
+        87.27744982290437,
+        958.1688311688312
+      ],
+      "sourceLabel": 68
+    },
+    {
+      "id": "front_062",
+      "file": "front/front_part_062.png",
+      "area": 845,
+      "bbox": [
+        908,
+        921,
+        941,
+        997
+      ],
+      "centroid": [
+        923.9207100591716,
+        958.4189349112426
+      ],
+      "sourceLabel": 69
+    },
+    {
+      "id": "front_063",
+      "file": "front/front_part_063.png",
+      "area": 797,
+      "bbox": [
+        373,
+        568,
+        406,
+        623
+      ],
+      "centroid": [
+        390.3111668757842,
+        599.116687578419
+      ],
+      "sourceLabel": 31
+    },
+    {
+      "id": "front_064",
+      "file": "front/front_part_064.png",
+      "area": 780,
+      "bbox": [
+        608,
+        569,
+        641,
+        623
+      ],
+      "centroid": [
+        622.3294871794872,
+        598.824358974359
+      ],
+      "sourceLabel": 32
+    },
+    {
+      "id": "front_065",
+      "file": "front/front_part_065.png",
+      "area": 730,
+      "bbox": [
+        59,
+        907,
+        92,
+        975
+      ],
+      "centroid": [
+        74.53835616438356,
+        939.5109589041095
+      ],
+      "sourceLabel": 66
+    },
+    {
+      "id": "front_066",
+      "file": "front/front_part_066.png",
+      "area": 721,
+      "bbox": [
+        921,
+        907,
+        952,
+        975
+      ],
+      "centroid": [
+        936.4355062413315,
+        939.2260748959778
+      ],
+      "sourceLabel": 67
+    },
+    {
+      "id": "front_067",
+      "file": "front/front_part_067.png",
+      "area": 678,
+      "bbox": [
+        592,
+        472,
+        636,
+        501
+      ],
+      "centroid": [
+        611.9365781710915,
+        485.0929203539823
+      ],
+      "sourceLabel": 20
+    },
+    {
+      "id": "front_068",
+      "file": "front/front_part_068.png",
+      "area": 677,
+      "bbox": [
+        377,
+        472,
+        420,
+        501
+      ],
+      "centroid": [
+        399.97341211225995,
+        485.0354505169867
+      ],
+      "sourceLabel": 19
+    },
+    {
+      "id": "front_069",
+      "file": "front/front_part_069.png",
+      "area": 663,
+      "bbox": [
+        679,
+        549,
+        743,
+        618
+      ],
+      "centroid": [
+        704.5505279034691,
+        583.4856711915536
+      ],
+      "sourceLabel": 27
+    },
+    {
+      "id": "front_070",
+      "file": "front/front_part_070.png",
+      "area": 661,
+      "bbox": [
+        269,
+        550,
+        333,
+        618
+      ],
+      "centroid": [
+        306.5794251134644,
+        583.626323751891
+      ],
+      "sourceLabel": 28
+    },
+    {
+      "id": "front_071",
+      "file": "front/front_part_071.png",
+      "area": 593,
+      "bbox": [
+        741,
+        704,
+        823,
+        801
+      ],
+      "centroid": [
+        776.1163575042159,
+        751.7993254637437
+      ],
+      "sourceLabel": 45
+    },
+    {
+      "id": "front_072",
+      "file": "front/front_part_072.png",
+      "area": 593,
+      "bbox": [
+        895,
+        933,
+        924,
+        995
+      ],
+      "centroid": [
+        908.3069139966274,
+        964.0927487352445
+      ],
+      "sourceLabel": 71
+    },
+    {
+      "id": "front_073",
+      "file": "front/front_part_073.png",
+      "area": 589,
+      "bbox": [
+        604,
+        504,
+        635,
+        536
+      ],
+      "centroid": [
+        616.9949066213921,
+        518.081494057725
+      ],
+      "sourceLabel": 24
+    },
+    {
+      "id": "front_074",
+      "file": "front/front_part_074.png",
+      "area": 584,
+      "bbox": [
+        378,
+        504,
+        410,
+        536
+      ],
+      "centroid": [
+        395.36301369863014,
+        518.2243150684932
+      ],
+      "sourceLabel": 23
+    },
+    {
+      "id": "front_075",
+      "file": "front/front_part_075.png",
+      "area": 583,
+      "bbox": [
+        189,
+        706,
+        270,
+        801
+      ],
+      "centroid": [
+        234.557461406518,
+        752.4511149228131
+      ],
+      "sourceLabel": 46
+    },
+    {
+      "id": "front_076",
+      "file": "front/front_part_076.png",
+      "area": 575,
+      "bbox": [
+        89,
+        933,
+        117,
+        994
+      ],
+      "centroid": [
+        102.82608695652173,
+        963.9686956521739
+      ],
+      "sourceLabel": 70
+    },
+    {
+      "id": "front_077",
+      "file": "front/front_part_077.png",
+      "area": 573,
+      "bbox": [
+        547,
+        1641,
+        572,
+        1690
+      ],
+      "centroid": [
+        556.6474694589878,
+        1661.261780104712
+      ],
+      "sourceLabel": 87
+    },
+    {
+      "id": "front_078",
+      "file": "front/front_part_078.png",
+      "area": 551,
+      "bbox": [
+        441,
+        1641,
+        464,
+        1690
+      ],
+      "centroid": [
+        454.1524500907441,
+        1660.568058076225
+      ],
+      "sourceLabel": 86
+    },
+    {
+      "id": "front_079",
+      "file": "front/front_part_079.png",
+      "area": 524,
+      "bbox": [
+        376,
+        536,
+        403,
+        576
+      ],
+      "centroid": [
+        391.4751908396947,
+        553.1545801526718
+      ],
+      "sourceLabel": 25
+    },
+    {
+      "id": "front_080",
+      "file": "front/front_part_080.png",
+      "area": 516,
+      "bbox": [
+        610,
+        536,
+        636,
+        576
+      ],
+      "centroid": [
+        620.6007751937984,
+        553.3972868217054
+      ],
+      "sourceLabel": 26
+    },
+    {
+      "id": "front_081",
+      "file": "front/front_part_081.png",
+      "area": 423,
+      "bbox": [
+        548,
+        1762,
+        566,
+        1793
+      ],
+      "centroid": [
+        556.8628841607565,
+        1778.7470449172577
+      ],
+      "sourceLabel": 93
+    },
+    {
+      "id": "front_082",
+      "file": "front/front_part_082.png",
+      "area": 422,
+      "bbox": [
+        447,
+        1762,
+        464,
+        1793
+      ],
+      "centroid": [
+        454.5379146919431,
+        1778.552132701422
+      ],
+      "sourceLabel": 92
+    }
+  ],
+  "back": [
+    {
+      "id": "back_001",
+      "file": "back/back_part_001.png",
+      "area": 22723,
+      "bbox": [
+        405,
+        19,
+        586,
+        225
+      ],
+      "centroid": [
+        495.1770452845135,
+        107.31633147031641
+      ],
+      "sourceLabel": 1
+    },
+    {
+      "id": "back_002",
+      "file": "back/back_part_002.png",
+      "area": 20899,
+      "bbox": [
+        325,
+        455,
+        480,
+        689
+      ],
+      "centroid": [
+        406.42700607684577,
+        554.7730991913488
+      ],
+      "sourceLabel": 14
+    },
+    {
+      "id": "back_003",
+      "file": "back/back_part_003.png",
+      "area": 20874,
+      "bbox": [
+        503,
+        455,
+        657,
+        689
+      ],
+      "centroid": [
+        575.1708345309955,
+        554.7847082494969
+      ],
+      "sourceLabel": 15
+    },
+    {
+      "id": "back_004",
+      "file": "back/back_part_004.png",
+      "area": 14968,
+      "bbox": [
+        353,
+        792,
+        486,
+        960
+      ],
+      "centroid": [
+        417.5738909673971,
+        863.0462987707109
+      ],
+      "sourceLabel": 36
+    },
+    {
+      "id": "back_005",
+      "file": "back/back_part_005.png",
+      "area": 14951,
+      "bbox": [
+        497,
+        792,
+        630,
+        962
+      ],
+      "centroid": [
+        564.1108955922681,
+        863.1402581767106
+      ],
+      "sourceLabel": 37
+    },
+    {
+      "id": "back_006",
+      "file": "back/back_part_006.png",
+      "area": 13299,
+      "bbox": [
+        501,
+        320,
+        651,
+        512
+      ],
+      "centroid": [
+        548.2905481615159,
+        398.5775622227235
+      ],
+      "sourceLabel": 7
+    },
+    {
+      "id": "back_007",
+      "file": "back/back_part_007.png",
+      "area": 13248,
+      "bbox": [
+        335,
+        320,
+        485,
+        511
+      ],
+      "centroid": [
+        437.57057669082127,
+        398.53691123188406
+      ],
+      "sourceLabel": 6
+    },
+    {
+      "id": "back_008",
+      "file": "back/back_part_008.png",
+      "area": 8612,
+      "bbox": [
+        520,
+        1216,
+        576,
+        1470
+      ],
+      "centroid": [
+        548.1663957268927,
+        1358.032745006967
+      ],
+      "sourceLabel": 62
+    },
+    {
+      "id": "back_009",
+      "file": "back/back_part_009.png",
+      "area": 8611,
+      "bbox": [
+        411,
+        1218,
+        467,
+        1470
+      ],
+      "centroid": [
+        437.8785274648705,
+        1358.185576588085
+      ],
+      "sourceLabel": 63
+    },
+    {
+      "id": "back_010",
+      "file": "back/back_part_010.png",
+      "area": 8106,
+      "bbox": [
+        552,
+        948,
+        596,
+        1235
+      ],
+      "centroid": [
+        571.4813718233407,
+        1090.753269183321
+      ],
+      "sourceLabel": 55
+    },
+    {
+      "id": "back_011",
+      "file": "back/back_part_011.png",
+      "area": 8038,
+      "bbox": [
+        392,
+        947,
+        435,
+        1231
+      ],
+      "centroid": [
+        414.57725802438415,
+        1090.5924359293356
+      ],
+      "sourceLabel": 54
+    },
+    {
+      "id": "back_012",
+      "file": "back/back_part_012.png",
+      "area": 6974,
+      "bbox": [
+        365,
+        1203,
+        413,
+        1460
+      ],
+      "centroid": [
+        388.8617722971035,
+        1345.228850014339
+      ],
+      "sourceLabel": 61
+    },
+    {
+      "id": "back_013",
+      "file": "back/back_part_013.png",
+      "area": 6973,
+      "bbox": [
+        574,
+        1202,
+        623,
+        1460
+      ],
+      "centroid": [
+        597.1045461064105,
+        1344.9523877814427
+      ],
+      "sourceLabel": 60
+    },
+    {
+      "id": "back_014",
+      "file": "back/back_part_014.png",
+      "area": 5677,
+      "bbox": [
+        433,
+        912,
+        481,
+        1117
+      ],
+      "centroid": [
+        458.3589924255769,
+        989.5333803064999
+      ],
+      "sourceLabel": 44
+    },
+    {
+      "id": "back_015",
+      "file": "back/back_part_015.png",
+      "area": 5657,
+      "bbox": [
+        506,
+        912,
+        554,
+        1117
+      ],
+      "centroid": [
+        527.5792823051087,
+        989.4530669966414
+      ],
+      "sourceLabel": 45
+    },
+    {
+      "id": "back_016",
+      "file": "back/back_part_016.png",
+      "area": 5255,
+      "bbox": [
+        626,
+        338,
+        719,
+        443
+      ],
+      "centroid": [
+        681.2894386298763,
+        380.00647002854424
+      ],
+      "sourceLabel": 9
+    },
+    {
+      "id": "back_017",
+      "file": "back/back_part_017.png",
+      "area": 5241,
+      "bbox": [
+        268,
+        338,
+        361,
+        443
+      ],
+      "centroid": [
+        304.7565350124022,
+        379.93798893340966
+      ],
+      "sourceLabel": 8
+    },
+    {
+      "id": "back_018",
+      "file": "back/back_part_018.png",
+      "area": 5226,
+      "bbox": [
+        583,
+        959,
+        630,
+        1237
+      ],
+      "centroid": [
+        612.7747799464217,
+        1081.0602755453501
+      ],
+      "sourceLabel": 57
+    },
+    {
+      "id": "back_019",
+      "file": "back/back_part_019.png",
+      "area": 5203,
+      "bbox": [
+        357,
+        959,
+        405,
+        1235
+      ],
+      "centroid": [
+        373.32635018258696,
+        1080.9110128771863
+      ],
+      "sourceLabel": 56
+    },
+    {
+      "id": "back_020",
+      "file": "back/back_part_020.png",
+      "area": 5091,
+      "bbox": [
+        501,
+        177,
+        605,
+        331
+      ],
+      "centroid": [
+        535.9742683166372,
+        278.67079159300727
+      ],
+      "sourceLabel": 2
+    },
+    {
+      "id": "back_021",
+      "file": "back/back_part_021.png",
+      "area": 5077,
+      "bbox": [
+        389,
+        178,
+        493,
+        331
+      ],
+      "centroid": [
+        457.118376994288,
+        278.6604293874335
+      ],
+      "sourceLabel": 3
+    },
+    {
+      "id": "back_022",
+      "file": "back/back_part_022.png",
+      "area": 4825,
+      "bbox": [
+        664,
+        431,
+        705,
+        606
+      ],
+      "centroid": [
+        684.6746113989637,
+        516.7674611398963
+      ],
+      "sourceLabel": 13
+    },
+    {
+      "id": "back_023",
+      "file": "back/back_part_023.png",
+      "area": 4819,
+      "bbox": [
+        282,
+        431,
+        323,
+        604
+      ],
+      "centroid": [
+        301.5181572940444,
+        516.2571072836688
+      ],
+      "sourceLabel": 12
+    },
+    {
+      "id": "back_024",
+      "file": "back/back_part_024.png",
+      "area": 4458,
+      "bbox": [
+        422,
+        636,
+        479,
+        778
+      ],
+      "centroid": [
+        457.7341857335128,
+        708.885598923284
+      ],
+      "sourceLabel": 22
+    },
+    {
+      "id": "back_025",
+      "file": "back/back_part_025.png",
+      "area": 4453,
+      "bbox": [
+        504,
+        637,
+        561,
+        778
+      ],
+      "centroid": [
+        523.7987873343814,
+        708.9685605209971
+      ],
+      "sourceLabel": 23
+    },
+    {
+      "id": "back_026",
+      "file": "back/back_part_026.png",
+      "area": 4170,
+      "bbox": [
+        584,
+        366,
+        668,
+        448
+      ],
+      "centroid": [
+        623.0741007194245,
+        413.71726618705037
+      ],
+      "sourceLabel": 11
+    },
+    {
+      "id": "back_027",
+      "file": "back/back_part_027.png",
+      "area": 4166,
+      "bbox": [
+        320,
+        366,
+        403,
+        448
+      ],
+      "centroid": [
+        362.99543927028327,
+        413.6740278444551
+      ],
+      "sourceLabel": 10
+    },
+    {
+      "id": "back_028",
+      "file": "back/back_part_028.png",
+      "area": 3845,
+      "bbox": [
+        79,
+        836,
+        143,
+        928
+      ],
+      "centroid": [
+        115.19973992197659,
+        880.6387516254877
+      ],
+      "sourceLabel": 38
+    },
+    {
+      "id": "back_029",
+      "file": "back/back_part_029.png",
+      "area": 3834,
+      "bbox": [
+        844,
+        836,
+        907,
+        928
+      ],
+      "centroid": [
+        870.5383411580594,
+        880.65232133542
+      ],
+      "sourceLabel": 39
+    },
+    {
+      "id": "back_030",
+      "file": "back/back_part_030.png",
+      "area": 3150,
+      "bbox": [
+        700,
+        653,
+        796,
+        794
+      ],
+      "centroid": [
+        745.8266666666667,
+        711.4393650793651
+      ],
+      "sourceLabel": 33
+    },
+    {
+      "id": "back_031",
+      "file": "back/back_part_031.png",
+      "area": 3139,
+      "bbox": [
+        194,
+        653,
+        289,
+        792
+      ],
+      "centroid": [
+        241.84740363172986,
+        711.2163109270468
+      ],
+      "sourceLabel": 32
+    },
+    {
+      "id": "back_032",
+      "file": "back/back_part_032.png",
+      "area": 2594,
+      "bbox": [
+        549,
+        1472,
+        596,
+        1705
+      ],
+      "centroid": [
+        571.3508095605243,
+        1561.8916730917501
+      ],
+      "sourceLabel": 65
+    },
+    {
+      "id": "back_033",
+      "file": "back/back_part_033.png",
+      "area": 2578,
+      "bbox": [
+        389,
+        1472,
+        435,
+        1705
+      ],
+      "centroid": [
+        412.01163692785104,
+        1562.0651667959658
+      ],
+      "sourceLabel": 64
+    },
+    {
+      "id": "back_034",
+      "file": "back/back_part_034.png",
+      "area": 2520,
+      "bbox": [
+        535,
+        744,
+        619,
+        818
+      ],
+      "centroid": [
+        581.1115079365079,
+        769.05
+      ],
+      "sourceLabel": 35
+    },
+    {
+      "id": "back_035",
+      "file": "back/back_part_035.png",
+      "area": 2518,
+      "bbox": [
+        364,
+        744,
+        448,
+        817
+      ],
+      "centroid": [
+        400.44479745830023,
+        768.9976171564734
+      ],
+      "sourceLabel": 34
+    },
+    {
+      "id": "back_036",
+      "file": "back/back_part_036.png",
+      "area": 2370,
+      "bbox": [
+        764,
+        641,
+        818,
+        796
+      ],
+      "centroid": [
+        789.4337552742616,
+        723.0898734177215
+      ],
+      "sourceLabel": 26
+    },
+    {
+      "id": "back_037",
+      "file": "back/back_part_037.png",
+      "area": 2369,
+      "bbox": [
+        170,
+        642,
+        224,
+        797
+      ],
+      "centroid": [
+        197.90924440692274,
+        723.5276487969608
+      ],
+      "sourceLabel": 27
+    },
+    {
+      "id": "back_038",
+      "file": "back/back_part_038.png",
+      "area": 1946,
+      "bbox": [
+        395,
+        1731,
+        456,
+        1796
+      ],
+      "centroid": [
+        426.8026721479959,
+        1773.3812949640287
+      ],
+      "sourceLabel": 74
+    },
+    {
+      "id": "back_039",
+      "file": "back/back_part_039.png",
+      "area": 1928,
+      "bbox": [
+        531,
+        1729,
+        592,
+        1796
+      ],
+      "centroid": [
+        559.0964730290457,
+        1773.3698132780082
+      ],
+      "sourceLabel": 73
+    },
+    {
+      "id": "back_040",
+      "file": "back/back_part_040.png",
+      "area": 1611,
+      "bbox": [
+        440,
+        1079,
+        453,
+        1251
+      ],
+      "centroid": [
+        445.53879577901927,
+        1174.4692737430169
+      ],
+      "sourceLabel": 58
+    },
+    {
+      "id": "back_041",
+      "file": "back/back_part_041.png",
+      "area": 1587,
+      "bbox": [
+        533,
+        1084,
+        547,
+        1250
+      ],
+      "centroid": [
+        540.3308128544423,
+        1173.862633900441
+      ],
+      "sourceLabel": 59
+    },
+    {
+      "id": "back_042",
+      "file": "back/back_part_042.png",
+      "area": 1550,
+      "bbox": [
+        784,
+        644,
+        849,
+        832
+      ],
+      "centroid": [
+        823.6490322580645,
+        762.9058064516129
+      ],
+      "sourceLabel": 28
+    },
+    {
+      "id": "back_043",
+      "file": "back/back_part_043.png",
+      "area": 1541,
+      "bbox": [
+        139,
+        646,
+        204,
+        831
+      ],
+      "centroid": [
+        163.63724853990914,
+        763.570408825438
+      ],
+      "sourceLabel": 29
+    },
+    {
+      "id": "back_044",
+      "file": "back/back_part_044.png",
+      "area": 1246,
+      "bbox": [
+        344,
+        926,
+        364,
+        1037
+      ],
+      "centroid": [
+        350.9695024077047,
+        980.0642054574639
+      ],
+      "sourceLabel": 48
+    },
+    {
+      "id": "back_045",
+      "file": "back/back_part_045.png",
+      "area": 1212,
+      "bbox": [
+        624,
+        926,
+        643,
+        1038
+      ],
+      "centroid": [
+        634.7574257425742,
+        980.3341584158416
+      ],
+      "sourceLabel": 49
+    },
+    {
+      "id": "back_046",
+      "file": "back/back_part_046.png",
+      "area": 1173,
+      "bbox": [
+        887,
+        843,
+        963,
+        892
+      ],
+      "centroid": [
+        923.7263427109974,
+        869.9070758738278
+      ],
+      "sourceLabel": 41
+    },
+    {
+      "id": "back_047",
+      "file": "back/back_part_047.png",
+      "area": 1172,
+      "bbox": [
+        24,
+        843,
+        100,
+        892
+      ],
+      "centroid": [
+        61.80290102389078,
+        870.0008532423208
+      ],
+      "sourceLabel": 40
+    },
+    {
+      "id": "back_048",
+      "file": "back/back_part_048.png",
+      "area": 1050,
+      "bbox": [
+        576,
+        652,
+        599,
+        723
+      ],
+      "centroid": [
+        589.3428571428572,
+        690.6838095238095
+      ],
+      "sourceLabel": 31
+    },
+    {
+      "id": "back_049",
+      "file": "back/back_part_049.png",
+      "area": 1002,
+      "bbox": [
+        385,
+        650,
+        407,
+        723
+      ],
+      "centroid": [
+        392.5768463073852,
+        691.5868263473054
+      ],
+      "sourceLabel": 30
+    },
+    {
+      "id": "back_050",
+      "file": "back/back_part_050.png",
+      "area": 856,
+      "bbox": [
+        896,
+        916,
+        930,
+        993
+      ],
+      "centroid": [
+        912.0817757009346,
+        954.5922897196261
+      ],
+      "sourceLabel": 46
+    },
+    {
+      "id": "back_051",
+      "file": "back/back_part_051.png",
+      "area": 849,
+      "bbox": [
+        57,
+        917,
+        91,
+        993
+      ],
+      "centroid": [
+        73.66548881036513,
+        954.7326266195524
+      ],
+      "sourceLabel": 47
+    },
+    {
+      "id": "back_052",
+      "file": "back/back_part_052.png",
+      "area": 750,
+      "bbox": [
+        453,
+        1476,
+        466,
+        1593
+      ],
+      "centroid": [
+        458.41066666666666,
+        1524.256
+      ],
+      "sourceLabel": 67
+    },
+    {
+      "id": "back_053",
+      "file": "back/back_part_053.png",
+      "area": 746,
+      "bbox": [
+        518,
+        1475,
+        531,
+        1589
+      ],
+      "centroid": [
+        524.642091152815,
+        1522.6581769436998
+      ],
+      "sourceLabel": 66
+    },
+    {
+      "id": "back_054",
+      "file": "back/back_part_054.png",
+      "area": 724,
+      "bbox": [
+        909,
+        902,
+        940,
+        970
+      ],
+      "centroid": [
+        924.517955801105,
+        935.371546961326
+      ],
+      "sourceLabel": 42
+    },
+    {
+      "id": "back_055",
+      "file": "back/back_part_055.png",
+      "area": 721,
+      "bbox": [
+        47,
+        903,
+        78,
+        971
+      ],
+      "centroid": [
+        61.35367545076283,
+        935.1317614424411
+      ],
+      "sourceLabel": 43
+    },
+    {
+      "id": "back_056",
+      "file": "back/back_part_056.png",
+      "area": 671,
+      "bbox": [
+        246,
+        466,
+        272,
+        588
+      ],
+      "centroid": [
+        255.38301043219076,
+        524.4292101341282
+      ],
+      "sourceLabel": 17
+    },
+    {
+      "id": "back_057",
+      "file": "back/back_part_057.png",
+      "area": 669,
+      "bbox": [
+        713,
+        463,
+        741,
+        582
+      ],
+      "centroid": [
+        730.254110612855,
+        522.6233183856502
+      ],
+      "sourceLabel": 16
+    },
+    {
+      "id": "back_058",
+      "file": "back/back_part_058.png",
+      "area": 664,
+      "bbox": [
+        449,
+        185,
+        466,
+        251
+      ],
+      "centroid": [
+        456.6490963855422,
+        216.42168674698794
+      ],
+      "sourceLabel": 4
+    },
+    {
+      "id": "back_059",
+      "file": "back/back_part_059.png",
+      "area": 664,
+      "bbox": [
+        528,
+        186,
+        545,
+        252
+      ],
+      "centroid": [
+        536.6069277108434,
+        217.05421686746988
+      ],
+      "sourceLabel": 5
+    },
+    {
+      "id": "back_060",
+      "file": "back/back_part_060.png",
+      "area": 633,
+      "bbox": [
+        263,
+        520,
+        275,
+        594
+      ],
+      "centroid": [
+        269.2101105845182,
+        561.3254344391785
+      ],
+      "sourceLabel": 18
+    },
+    {
+      "id": "back_061",
+      "file": "back/back_part_061.png",
+      "area": 621,
+      "bbox": [
+        712,
+        522,
+        724,
+        594
+      ],
+      "centroid": [
+        716.756843800322,
+        561.2351046698873
+      ],
+      "sourceLabel": 19
+    },
+    {
+      "id": "back_062",
+      "file": "back/back_part_062.png",
+      "area": 595,
+      "bbox": [
+        883,
+        929,
+        912,
+        990
+      ],
+      "centroid": [
+        896.2403361344537,
+        960.0638655462185
+      ],
+      "sourceLabel": 51
+    },
+    {
+      "id": "back_063",
+      "file": "back/back_part_063.png",
+      "area": 590,
+      "bbox": [
+        75,
+        929,
+        104,
+        990
+      ],
+      "centroid": [
+        89.35593220338983,
+        960.2508474576272
+      ],
+      "sourceLabel": 50
+    }
+  ],
+  "_meta": {
+    "full_size": [
+      2048,
+      1885
+    ],
+    "front_base_size": [
+      998,
+      1819
+    ],
+    "back_base_size": [
+      994,
+      1819
+    ],
+    "front_bbox_in_full": [
+      28,
+      66,
+      1026,
+      1885
+    ],
+    "back_bbox_in_full": [
+      1021,
+      66,
+      2015,
+      1885
+    ],
+    "split_col_in_full": 1011,
+    "counts": {
+      "front_parts": 82,
+      "back_parts": 63
+    },
+    "notes": "Parts are derived from connected-components of dark regions in the image. bbox values are [x0,y0,x1,y1] in pixels within the cropped base images."
+  }
+}
