@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 interface SiteNavProps {
   current: "home" | "dashboard" | "coach" | "about" | "login" | "register" | "history";
   className?: string;
+  suppressActive?: boolean;
 }
 
 const items: Array<{ key: SiteNavProps["current"]; href: string; label: string }> = [
@@ -19,7 +20,7 @@ const items: Array<{ key: SiteNavProps["current"]; href: string; label: string }
   { key: "about", href: "/about", label: "About Us" },
 ];
 
-export function SiteNav({ current, className }: SiteNavProps) {
+export function SiteNav({ current, className, suppressActive = false }: SiteNavProps) {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -40,7 +41,8 @@ export function SiteNav({ current, className }: SiteNavProps) {
   return (
     <nav
       className={cn(
-        "relative z-[200] flex items-center justify-between rounded-2xl border border-slate-200 bg-white/92 px-4 py-3 shadow-sm backdrop-blur md:px-6",
+        "relative flex items-center justify-between rounded-2xl border border-slate-200 bg-white/92 px-4 py-3 shadow-sm backdrop-blur md:px-6",
+        suppressActive ? "z-40" : "z-[200]",
         className,
       )}
     >
@@ -50,7 +52,7 @@ export function SiteNav({ current, className }: SiteNavProps) {
 
       <div className="flex items-center gap-2">
         {items.map((item) => {
-          const active = item.key === current;
+          const active = !suppressActive && item.key === current;
           return (
             <Link
               key={item.key}

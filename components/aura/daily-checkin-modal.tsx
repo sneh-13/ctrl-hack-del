@@ -26,6 +26,8 @@ interface DailyCheckInModalProps {
   profile: UserFitnessProfile;
   latestLog?: DailyLogs;
   onSubmit: (log: DailyLogs) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 type CheckInForm = {
@@ -76,8 +78,16 @@ function sorenessToSubjective(statusByGroup: Record<string, StatusType | undefin
   return Math.round((total / MUSCLE_GROUPS.length) * 5);
 }
 
-export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckInModalProps) {
-  const [open, setOpen] = useState(false);
+export function DailyCheckInModal({
+  profile,
+  latestLog,
+  onSubmit,
+  open: controlledOpen,
+  onOpenChange: onOpenChangeProp,
+}: DailyCheckInModalProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = onOpenChangeProp ?? setInternalOpen;
   const [form, setForm] = useState<CheckInForm>(() => createInitialForm(profile, latestLog));
   const [view, setView] = useState<"front" | "back">("front");
   const [hoveredGroupKey, setHoveredGroupKey] = useState<string | null>(null);
@@ -126,7 +136,10 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button className="h-10 rounded-xl bg-blue-600 text-white hover:bg-blue-700">
+        <Button
+          className="h-10 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
+          onClick={() => setOpen(true)}
+        >
           <CalendarClock className="mr-2 h-4 w-4" />
           Daily Check-in
         </Button>

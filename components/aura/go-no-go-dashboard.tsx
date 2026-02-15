@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ActivitySquare, Moon, TrendingUp } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 import { DailyCheckInModal } from "@/components/aura/daily-checkin-modal";
 import { DailyReadinessHeatmap } from "@/components/aura/daily-readiness-heatmap";
@@ -46,15 +47,17 @@ export function GoNoGoDashboard({
   logs,
   onSubmitDailyLog,
 }: GoNoGoDashboardProps) {
+  const [checkInOpen, setCheckInOpen] = useState(false);
   const latestLog = logs[0];
   const palette = statePalette[readiness.state];
   const { data: session } = useSession();
   const firstName = session?.user?.name?.split(" ")[0];
+  const navCurrent = checkInOpen ? "history" : "dashboard";
 
   return (
     <div className="min-h-screen px-4 py-6 md:px-8 md:py-10">
       <div className="mx-auto w-full max-w-6xl space-y-6">
-        <SiteNav current="dashboard" />
+        <SiteNav current={navCurrent} suppressActive={checkInOpen} />
 
         <header className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:flex-row md:items-center md:justify-between md:p-8">
           <div>
@@ -75,7 +78,13 @@ export function GoNoGoDashboard({
             </p>
           </div>
 
-          <DailyCheckInModal profile={profile} latestLog={latestLog} onSubmit={onSubmitDailyLog} />
+          <DailyCheckInModal
+            profile={profile}
+            latestLog={latestLog}
+            onSubmit={onSubmitDailyLog}
+            open={checkInOpen}
+            onOpenChange={setCheckInOpen}
+          />
         </header>
 
         <AnimatePresence mode="wait">
