@@ -21,8 +21,15 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "No text provided" }, { status: 400 });
         }
 
-        // Limit text length for free tier
-        const trimmedText = text.slice(0, 500);
+        // Clean text: strip markdown, newlines, extra spaces
+        const cleanText = text
+            .replace(/\*\*(.*?)\*\*/g, "$1")
+            .replace(/\n+/g, " ")
+            .replace(/\s+/g, " ")
+            .trim()
+            .slice(0, 500);
+
+        console.log("[TTS] Sending text:", cleanText.slice(0, 80), "...");
 
         const response = await fetch(`${ELEVENLABS_API_URL}/${voiceId || DEFAULT_VOICE_ID}`, {
             method: "POST",
@@ -32,12 +39,11 @@ export async function POST(req: NextRequest) {
                 Accept: "audio/mpeg",
             },
             body: JSON.stringify({
-                text: trimmedText,
-                model_id: "eleven_monolingual_v1",
+                text: cleanText,
+                model_id: "eleven_flash_v2_5",
                 voice_settings: {
                     stability: 0.6,
                     similarity_boost: 0.75,
-                    style: 0.3,
                 },
             }),
         });
