@@ -88,8 +88,8 @@ export function EnergyClock({
       datasets: [
         {
           data: hourlyPerformance,
-          borderColor: "rgba(57, 255, 20, 0.95)",
-          backgroundColor: "rgba(57, 255, 20, 0.16)",
+          borderColor: "rgba(0, 148, 255, 0.95)",
+          backgroundColor: "rgba(0, 148, 255, 0.12)",
           borderWidth: 2,
           tension: 0.42,
           fill: true,
@@ -106,12 +106,12 @@ export function EnergyClock({
         <svg viewBox="0 0 280 280" className="h-full w-full">
           <defs>
             <linearGradient id="peak-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#39ff14" />
-              <stop offset="100%" stopColor="#84ff4f" />
+              <stop offset="0%" stopColor="#0094FF" />
+              <stop offset="100%" stopColor="#01EDB8" />
             </linearGradient>
           </defs>
 
-          <circle cx="140" cy="140" r="98" fill="none" stroke="rgba(110, 132, 159, 0.28)" strokeWidth="16" />
+          <circle cx="140" cy="140" r="98" fill="none" stroke="rgba(148, 163, 184, 0.35)" strokeWidth="16" />
 
           {Array.from({ length: 24 }, (_, hour) => {
             const angle = minuteToAngle(hour * 60);
@@ -124,8 +124,8 @@ export function EnergyClock({
                 y1={inner.y}
                 x2={outer.x}
                 y2={outer.y}
-                stroke={hour % 3 === 0 ? "rgba(140, 176, 210, 0.75)" : "rgba(90, 122, 156, 0.55)"}
-                strokeWidth={hour % 3 === 0 ? 2 : 1}
+                stroke={hour % 3 === 0 ? "rgba(100, 116, 139, 0.65)" : "rgba(148, 163, 184, 0.45)"}
+                strokeWidth={hour % 3 === 0 ? 1.8 : 1}
               />
             );
           })}
@@ -141,19 +141,19 @@ export function EnergyClock({
             />
           ))}
 
-          <circle cx={wakeMarker.x} cy={wakeMarker.y} r="7" fill="#38bdf8" stroke="#0f172a" strokeWidth="2" />
+          <circle cx={wakeMarker.x} cy={wakeMarker.y} r="6" fill="#2563eb" stroke="#ffffff" strokeWidth="2" />
         </svg>
 
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
-          <span className="text-xs tracking-[0.22em] text-slate-400 uppercase">Strength Peak</span>
-          <span className="font-display mt-1 text-2xl text-white">{formatMinutes(peakStartMinutes)}</span>
-          <span className="text-xs tracking-[0.16em] text-slate-300 uppercase">to {formatMinutes(peakEndMinutes)}</span>
+          <span className="text-xs font-semibold tracking-[0.14em] text-slate-500 uppercase">Strength Peak</span>
+          <span className="mt-1 text-2xl font-semibold text-slate-900">{formatMinutes(peakStartMinutes)}</span>
+          <span className="text-xs font-semibold tracking-[0.12em] text-slate-500 uppercase">to {formatMinutes(peakEndMinutes)}</span>
         </div>
       </div>
 
-      <div className="rounded-xl border border-white/10 bg-slate-950/65 p-3">
-        <div className="mb-2 flex items-center gap-2 text-xs tracking-[0.14em] text-slate-300 uppercase">
-          <Zap className="h-4 w-4 text-[#39ff14]" />
+      <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+        <div className="mb-2 flex items-center gap-2 text-xs font-semibold tracking-[0.12em] text-slate-500 uppercase">
+          <Zap className="h-4 w-4 text-blue-600" />
           Circadian Force Curve
         </div>
         <div className="h-24">
@@ -175,7 +175,7 @@ export function EnergyClock({
               scales: {
                 x: {
                   ticks: {
-                    color: "rgba(148, 163, 184, 0.8)",
+                    color: "rgba(100, 116, 139, 0.9)",
                     maxTicksLimit: 6,
                   },
                   grid: {

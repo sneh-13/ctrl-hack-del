@@ -15,33 +15,29 @@ const stateConfig: Record<
     label: string;
     title: string;
     color: string;
-    bg: string;
-    glow: string;
+    lightBg: string;
     Icon: typeof CheckCircle2;
   }
 > = {
   green: {
     label: "GO",
     title: "Prime for heavy lifting",
-    color: "#39ff14",
-    bg: "bg-[#39ff14]",
-    glow: "0 0 40px rgba(57,255,20,0.55)",
+    color: "#15803d",
+    lightBg: "#dcfce7",
     Icon: CheckCircle2,
   },
   yellow: {
     label: "CAUTION",
     title: "Moderate load recommended",
-    color: "#ffb020",
-    bg: "bg-[#ffb020]",
-    glow: "0 0 40px rgba(255,176,32,0.48)",
+    color: "#b45309",
+    lightBg: "#fef3c7",
     Icon: Activity,
   },
   red: {
     label: "NO-GO",
     title: "Recovery focus day",
-    color: "#ff355e",
-    bg: "bg-[#ff355e]",
-    glow: "0 0 40px rgba(255,53,94,0.52)",
+    color: "#be123c",
+    lightBg: "#ffe4e6",
     Icon: AlertTriangle,
   },
 };
@@ -60,35 +56,35 @@ export function ReadinessScoreDisplay({ readiness }: ReadinessScoreDisplayProps)
           transition={{ duration: 0.28, ease: "easeOut" }}
           className="space-y-4"
         >
-          <div className="mx-auto flex w-fit items-center gap-3 rounded-full border border-white/15 px-4 py-1.5">
+          <div className="mx-auto flex w-fit items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5">
             <active.Icon className="h-4 w-4" style={{ color: active.color }} />
-            <span className="text-xs tracking-[0.24em] text-slate-300 uppercase">{active.label}</span>
+            <span className="text-xs font-semibold tracking-[0.18em] text-slate-600 uppercase">{active.label}</span>
           </div>
 
-          <div className="mx-auto grid w-[84px] gap-3 rounded-2xl border border-white/15 bg-slate-950/70 p-3">
+          <div className="mx-auto grid w-[84px] gap-3 rounded-2xl border border-slate-200 bg-white p-3">
             {(["red", "yellow", "green"] as const).map((light) => {
               const isActive = light === readiness.state;
               return (
                 <motion.div
                   key={light}
                   animate={{
-                    opacity: isActive ? 1 : 0.25,
-                    scale: isActive ? 1.05 : 0.95,
-                    boxShadow: isActive ? stateConfig[light].glow : "none",
+                    opacity: isActive ? 1 : 0.35,
+                    scale: isActive ? 1.04 : 0.94,
                   }}
                   transition={{ duration: 0.28 }}
-                  className={`h-14 w-14 rounded-full ${stateConfig[light].bg}`}
+                  className="h-14 w-14 rounded-full border border-slate-200"
+                  style={{ backgroundColor: stateConfig[light].lightBg }}
                 />
               );
             })}
           </div>
 
           <div>
-            <div className="font-display text-6xl leading-none text-white">{readiness.score}</div>
-            <div className="text-xs tracking-[0.22em] text-slate-300 uppercase">Readiness Score</div>
+            <div className="text-6xl font-semibold leading-none text-slate-900">{readiness.score}</div>
+            <div className="text-xs font-semibold tracking-[0.16em] text-slate-500 uppercase">Readiness Score</div>
           </div>
 
-          <p className="max-w-xs text-sm text-slate-300">{active.title}</p>
+          <p className="max-w-xs text-sm text-slate-600">{active.title}</p>
         </motion.div>
       </AnimatePresence>
     </div>

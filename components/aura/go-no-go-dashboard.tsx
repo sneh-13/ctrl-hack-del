@@ -23,18 +23,18 @@ interface GoNoGoDashboardProps {
 
 const statePalette = {
   green: {
-    badge: "bg-[#39ff14]/20 text-[#91ff7a] border-[#39ff14]/45",
-    panel: "border-[#39ff14]/35 bg-[#39ff14]/8",
+    badge: "border-emerald-200 bg-emerald-50 text-emerald-700",
+    panel: "border-emerald-200 bg-emerald-50",
     title: "GO for high-intent training",
   },
   yellow: {
-    badge: "bg-[#ffb020]/20 text-[#ffd38a] border-[#ffb020]/45",
-    panel: "border-[#ffb020]/35 bg-[#ffb020]/8",
+    badge: "border-amber-200 bg-amber-50 text-amber-700",
+    panel: "border-amber-200 bg-amber-50",
     title: "Caution: use calibrated volume",
   },
   red: {
-    badge: "bg-[#ff355e]/20 text-[#ff9db2] border-[#ff355e]/45",
-    panel: "border-[#ff355e]/35 bg-[#ff355e]/8",
+    badge: "border-rose-200 bg-rose-50 text-rose-700",
+    panel: "border-rose-200 bg-rose-50",
     title: "NO-GO for max loading",
   },
 };
@@ -49,20 +49,20 @@ export function GoNoGoDashboard({
   const palette = statePalette[readiness.state];
 
   return (
-    <div className="min-h-screen px-4 py-6 md:px-8 md:py-9">
-      <div className="mx-auto w-full max-w-7xl space-y-6">
+    <div className="min-h-screen px-4 py-6 md:px-8 md:py-10">
+      <div className="mx-auto w-full max-w-6xl space-y-6">
         <SiteNav current="dashboard" />
 
-        <header className="flex flex-col gap-4 rounded-2xl border border-cyan-400/20 bg-slate-950/68 p-4 backdrop-blur md:flex-row md:items-center md:justify-between md:p-6">
+        <header className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:flex-row md:items-center md:justify-between md:p-8">
           <div>
             <div className="mb-2 flex items-center gap-2">
               <Badge className={palette.badge}>Aura Go/No-Go</Badge>
-              <Badge variant="outline" className="border-white/20 text-slate-300">
+              <Badge variant="outline" className="border-slate-300 text-slate-600">
                 {profile.chronotype.toUpperCase()} CHRONOTYPE
               </Badge>
             </div>
-            <h1 className="font-display text-3xl text-white md:text-4xl">Biological Prime Time Dashboard</h1>
-            <p className="mt-1 text-sm text-slate-300">
+            <h1 className="text-3xl text-slate-900 md:text-4xl">Biological Prime Time Dashboard</h1>
+            <p className="mt-1 text-sm text-slate-600">
               Strength peak is modeled {readiness.peakWindow.startHour}-{readiness.peakWindow.endHour} hours post-wake.
             </p>
           </div>
@@ -79,27 +79,27 @@ export function GoNoGoDashboard({
             transition={{ duration: 0.25 }}
             className={`rounded-2xl border px-5 py-4 ${palette.panel}`}
           >
-            <p className="text-xs tracking-[0.18em] text-slate-300 uppercase">Today&apos;s Readiness Directive</p>
-            <p className="font-display mt-1 text-2xl text-white">{palette.title}</p>
-            <p className="text-sm text-slate-300">{readiness.summary}</p>
+            <p className="text-xs font-semibold tracking-[0.14em] text-slate-500 uppercase">Today&apos;s Readiness Directive</p>
+            <p className="mt-1 text-2xl text-slate-900">{palette.title}</p>
+            <p className="text-sm text-slate-600">{readiness.summary}</p>
           </motion.div>
         </AnimatePresence>
 
         <div className="grid gap-4 lg:grid-cols-12">
-          <Card className="border-white/10 bg-slate-950/68 lg:col-span-4">
+          <Card className="border-slate-200 bg-white shadow-sm lg:col-span-4">
             <CardHeader>
-              <CardTitle className="font-display text-xl text-white">Go/No-Go Indicator</CardTitle>
-              <CardDescription>Glance decision in under three seconds.</CardDescription>
+              <CardTitle className="text-xl text-slate-900">Go/No-Go Indicator</CardTitle>
+              <CardDescription className="text-slate-500">Glance decision in under three seconds.</CardDescription>
             </CardHeader>
             <CardContent>
               <ReadinessScoreDisplay readiness={readiness} />
             </CardContent>
           </Card>
 
-          <Card className="border-white/10 bg-slate-950/68 lg:col-span-4">
+          <Card className="border-slate-200 bg-white shadow-sm lg:col-span-4">
             <CardHeader>
-              <CardTitle className="font-display text-xl text-white">Energy Clock</CardTitle>
-              <CardDescription>Prime lifting window anchored to wake time.</CardDescription>
+              <CardTitle className="text-xl text-slate-900">Energy Clock</CardTitle>
+              <CardDescription className="text-slate-500">Prime lifting window anchored to wake time.</CardDescription>
             </CardHeader>
             <CardContent>
               <EnergyClock
@@ -111,57 +111,57 @@ export function GoNoGoDashboard({
             </CardContent>
           </Card>
 
-          <Card className="border-white/10 bg-slate-950/68 lg:col-span-4">
+          <Card className="border-slate-200 bg-white shadow-sm lg:col-span-4">
             <CardHeader>
-              <CardTitle className="font-display text-xl text-white">24h Readiness Heatmap</CardTitle>
-              <CardDescription>Blue = cooler/recovered, red = higher fatigue load.</CardDescription>
+              <CardTitle className="text-xl text-slate-900">24h Readiness Heatmap</CardTitle>
+              <CardDescription className="text-slate-500">Blue = cooler/recovered, red = higher fatigue load.</CardDescription>
             </CardHeader>
             <CardContent>
               <DailyReadinessHeatmap hourlyPerformance={readiness.hourlyPerformance} />
             </CardContent>
           </Card>
 
-          <Card className="border-white/10 bg-slate-950/68 lg:col-span-7">
+          <Card className="border-slate-200 bg-white shadow-sm lg:col-span-7">
             <CardHeader>
-              <CardTitle className="font-display text-xl text-white">Interactive Body Map</CardTitle>
-              <CardDescription>Latest soreness regions from daily check-in.</CardDescription>
+              <CardTitle className="text-xl text-slate-900">Interactive Body Map</CardTitle>
+              <CardDescription className="text-slate-500">Latest soreness regions from daily check-in.</CardDescription>
             </CardHeader>
             <CardContent>
               <InteractiveBodyMap value={latestLog?.muscleSoreness ?? emptyMuscleSoreness} interactive={false} />
             </CardContent>
           </Card>
 
-          <Card className="border-white/10 bg-slate-950/68 lg:col-span-5">
+          <Card className="border-slate-200 bg-white shadow-sm lg:col-span-5">
             <CardHeader>
-              <CardTitle className="font-display text-xl text-white">Performance Context</CardTitle>
-              <CardDescription>Recovery signals feeding today&apos;s prediction.</CardDescription>
+              <CardTitle className="text-xl text-slate-900">Performance Context</CardTitle>
+              <CardDescription className="text-slate-500">Recovery signals feeding today&apos;s prediction.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4 text-sm text-slate-200">
+            <CardContent className="space-y-4 text-sm text-slate-700">
               <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-xl border border-white/10 bg-slate-900/60 p-3">
-                  <p className="mb-1 flex items-center gap-2 text-xs tracking-[0.12em] text-slate-300 uppercase">
-                    <Moon className="h-4 w-4 text-cyan-300" /> Sleep
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                  <p className="mb-1 flex items-center gap-2 text-xs font-semibold tracking-[0.1em] text-slate-500 uppercase">
+                    <Moon className="h-4 w-4 text-blue-600" /> Sleep
                   </p>
-                  <p className="font-display text-2xl text-white">{latestLog?.sleepDurationHours ?? profile.targetSleepHours}h</p>
+                  <p className="text-2xl font-semibold text-slate-900">{latestLog?.sleepDurationHours ?? profile.targetSleepHours}h</p>
                 </div>
 
-                <div className="rounded-xl border border-white/10 bg-slate-900/60 p-3">
-                  <p className="mb-1 flex items-center gap-2 text-xs tracking-[0.12em] text-slate-300 uppercase">
-                    <ActivitySquare className="h-4 w-4 text-cyan-300" /> Stress
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                  <p className="mb-1 flex items-center gap-2 text-xs font-semibold tracking-[0.1em] text-slate-500 uppercase">
+                    <ActivitySquare className="h-4 w-4 text-blue-600" /> Stress
                   </p>
-                  <p className="font-display text-2xl text-white">{latestLog?.stress ?? 0}/10</p>
+                  <p className="text-2xl font-semibold text-slate-900">{latestLog?.stress ?? 0}/10</p>
                 </div>
 
-                <div className="rounded-xl border border-white/10 bg-slate-900/60 p-3">
-                  <p className="mb-1 flex items-center gap-2 text-xs tracking-[0.12em] text-slate-300 uppercase">
-                    <TrendingUp className="h-4 w-4 text-cyan-300" /> Last RPE
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                  <p className="mb-1 flex items-center gap-2 text-xs font-semibold tracking-[0.1em] text-slate-500 uppercase">
+                    <TrendingUp className="h-4 w-4 text-blue-600" /> Last RPE
                   </p>
-                  <p className="font-display text-2xl text-white">{latestLog?.lastSessionRpe ?? 0}</p>
+                  <p className="text-2xl font-semibold text-slate-900">{latestLog?.lastSessionRpe ?? 0}</p>
                 </div>
 
-                <div className="rounded-xl border border-white/10 bg-slate-900/60 p-3">
-                  <p className="mb-1 text-xs tracking-[0.12em] text-slate-300 uppercase">Updated</p>
-                  <p className="font-display text-xl text-white">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                  <p className="mb-1 text-xs font-semibold tracking-[0.1em] text-slate-500 uppercase">Updated</p>
+                  <p className="text-xl font-semibold text-slate-900">
                     {new Date(readiness.updatedAt).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -170,12 +170,12 @@ export function GoNoGoDashboard({
                 </div>
               </div>
 
-              <div className="rounded-xl border border-white/10 bg-slate-900/60 p-4">
-                <p className="mb-1 text-xs tracking-[0.12em] text-slate-300 uppercase">Yesterday&apos;s Session</p>
-                <p>{latestLog?.yesterdayWorkout ?? "No session logged"}</p>
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <p className="mb-1 text-xs font-semibold tracking-[0.1em] text-slate-500 uppercase">Yesterday&apos;s Session</p>
+                <p className="text-slate-700">{latestLog?.yesterdayWorkout ?? "No session logged"}</p>
               </div>
 
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 Data is mock-backed but typed for FastAPI integration via the shared models in <code>types.ts</code>.
               </p>
             </CardContent>

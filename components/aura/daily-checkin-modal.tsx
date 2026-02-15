@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { CalendarClock } from "lucide-react";
 
+import { InteractiveBodyMap } from "@/components/aura/interactive-body-map";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,7 +20,6 @@ import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 import { emptyMuscleSoreness } from "@/lib/mock-data";
 import type { DailyLogs, MuscleGroup, SorenessLevel, UserFitnessProfile } from "@/types";
-import { InteractiveBodyMap } from "@/components/aura/interactive-body-map";
 
 interface DailyCheckInModalProps {
   profile: UserFitnessProfile;
@@ -95,16 +95,16 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button className="bg-cyan-400 text-slate-950 hover:bg-cyan-300">
+        <Button className="h-10 rounded-xl bg-blue-600 text-white hover:bg-blue-700">
           <CalendarClock className="mr-2 h-4 w-4" />
           Daily Check-in
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto border-white/10 bg-slate-950 text-slate-100">
+      <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto border-slate-200 bg-white text-slate-700">
         <DialogHeader>
-          <DialogTitle className="font-display text-2xl text-white">Recovery Check-in</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-2xl text-slate-900">Recovery Check-in</DialogTitle>
+          <DialogDescription className="text-slate-500">
             Update sleep, strain, and soreness inputs to refresh today&apos;s Go/No-Go state.
           </DialogDescription>
         </DialogHeader>
@@ -127,7 +127,7 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
                       sleepDurationHours: Number(event.target.value),
                     }))
                   }
-                  className="border-white/15 bg-slate-900/65"
+                  className="border-slate-300 bg-white"
                 />
               </div>
 
@@ -138,7 +138,7 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
                   type="time"
                   value={form.wakeTime}
                   onChange={(event) => setForm((prev) => ({ ...prev, wakeTime: event.target.value }))}
-                  className="border-white/15 bg-slate-900/65"
+                  className="border-slate-300 bg-white"
                 />
               </div>
 
@@ -149,16 +149,16 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
                   type="time"
                   value={form.bedTime}
                   onChange={(event) => setForm((prev) => ({ ...prev, bedTime: event.target.value }))}
-                  className="border-white/15 bg-slate-900/65"
+                  className="border-slate-300 bg-white"
                 />
               </div>
             </div>
 
-            <div className="space-y-4 rounded-2xl border border-white/10 bg-slate-900/45 p-4">
+            <div className="space-y-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
               <div>
                 <div className="mb-2 flex items-center justify-between">
                   <Label>Stress (0-10)</Label>
-                  <span className="font-display text-xl text-cyan-200">{form.stress}</span>
+                  <span className="text-xl font-semibold text-slate-900">{form.stress}</span>
                 </div>
                 <Slider
                   value={[form.stress]}
@@ -172,7 +172,7 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
               <div>
                 <div className="mb-2 flex items-center justify-between">
                   <Label>Last Session RPE</Label>
-                  <span className="font-display text-xl text-cyan-200">{form.lastSessionRpe}</span>
+                  <span className="text-xl font-semibold text-slate-900">{form.lastSessionRpe}</span>
                 </div>
                 <Slider
                   value={[form.lastSessionRpe]}
@@ -191,7 +191,7 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
               <div>
                 <div className="mb-2 flex items-center justify-between">
                   <Label>Subjective Soreness (0-10)</Label>
-                  <span className="font-display text-xl text-cyan-200">{form.subjectiveSoreness}</span>
+                  <span className="text-xl font-semibold text-slate-900">{form.subjectiveSoreness}</span>
                 </div>
                 <Slider
                   value={[form.subjectiveSoreness]}
@@ -219,15 +219,15 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
                     yesterdayWorkout: event.target.value,
                   }))
                 }
-                className="min-h-[120px] border-white/15 bg-slate-900/65"
+                className="min-h-[120px] border-slate-300 bg-white"
                 placeholder="Session type, key lifts, and notable fatigue..."
               />
             </div>
           </div>
 
           <div className="space-y-4">
-            <p className="text-sm text-slate-300">
-              Tap any region to toggle soreness state: Green (Recovered), Yellow (Recovering), Red (Sore).
+            <p className="text-sm text-slate-600">
+              Tap a region to toggle soreness state: Green (Recovered), Yellow (Recovering), Red (Sore).
             </p>
 
             <InteractiveBodyMap
@@ -241,16 +241,16 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
               }
             />
 
-            <div className="rounded-xl border border-cyan-300/20 bg-cyan-400/8 p-4">
-              <p className="text-xs tracking-[0.14em] text-slate-300 uppercase">Estimated Readiness (Pre-submit)</p>
-              <p className="font-display mt-2 text-4xl text-cyan-200">{readinessHint}</p>
-              <p className="text-sm text-slate-300">Final score updates after check-in submission.</p>
+            <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
+              <p className="text-xs font-semibold tracking-[0.12em] text-slate-500 uppercase">Estimated Readiness (Pre-submit)</p>
+              <p className="mt-2 text-4xl font-semibold text-slate-900">{readinessHint}</p>
+              <p className="text-sm text-slate-600">Final score updates after check-in submission.</p>
             </div>
           </div>
         </div>
 
         <DialogFooter className="mt-2">
-          <Button onClick={submitCheckIn} className="bg-[#39ff14] text-slate-950 hover:bg-[#7eff61]">
+          <Button onClick={submitCheckIn} className="h-10 rounded-xl bg-blue-600 px-5 text-white hover:bg-blue-700">
             Save Daily Inputs
           </Button>
         </DialogFooter>

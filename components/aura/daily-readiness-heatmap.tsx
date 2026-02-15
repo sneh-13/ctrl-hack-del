@@ -18,12 +18,12 @@ interface DailyReadinessHeatmapProps {
 
 function heatColor(value: number) {
   const ratio = Math.max(0, Math.min(1, value / 100));
-  const start = { r: 59, g: 130, b: 246 };
-  const end = { r: 239, g: 68, b: 68 };
+  const start = { r: 14, g: 116, b: 255 };
+  const end = { r: 225, g: 29, b: 72 };
   const r = Math.round(start.r + (end.r - start.r) * ratio);
   const g = Math.round(start.g + (end.g - start.g) * ratio);
   const b = Math.round(start.b + (end.b - start.b) * ratio);
-  return `rgba(${r}, ${g}, ${b}, 0.86)`;
+  return `rgba(${r}, ${g}, ${b}, 0.72)`;
 }
 
 export function DailyReadinessHeatmap({ hourlyPerformance }: DailyReadinessHeatmapProps) {
@@ -76,7 +76,7 @@ export function DailyReadinessHeatmap({ hourlyPerformance }: DailyReadinessHeatm
             scales: {
               x: {
                 ticks: {
-                  color: "rgba(148,163,184,0.78)",
+                  color: "rgba(100,116,139,0.85)",
                   maxTicksLimit: 8,
                 },
                 grid: {
@@ -104,10 +104,10 @@ export function DailyReadinessHeatmap({ hourlyPerformance }: DailyReadinessHeatm
         />
       </div>
 
-      <div className="flex items-center justify-between text-xs text-slate-300">
-        <span className="tracking-[0.14em] uppercase">Cool / Recovered</span>
-        <div className="h-2 w-32 rounded-full bg-gradient-to-r from-blue-500 via-amber-400 to-red-500" />
-        <span className="tracking-[0.14em] uppercase">Hot / Fatigue</span>
+      <div className="flex items-center justify-between text-xs text-slate-500">
+        <span className="font-semibold tracking-[0.1em] uppercase">Cool / Recovered</span>
+        <div className="h-2 w-32 rounded-full bg-gradient-to-r from-blue-500 via-amber-400 to-rose-600" />
+        <span className="font-semibold tracking-[0.1em] uppercase">Hot / Fatigue</span>
       </div>
     </div>
   );

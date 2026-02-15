@@ -17,11 +17,11 @@ export function SiteNav({ current, className }: SiteNavProps) {
   return (
     <nav
       className={cn(
-        "flex items-center justify-between rounded-2xl border border-cyan-300/20 bg-slate-950/72 px-4 py-3 backdrop-blur md:px-6",
+        "flex items-center justify-between rounded-2xl border border-slate-200 bg-white/92 px-4 py-3 shadow-sm backdrop-blur md:px-6",
         className,
       )}
     >
-      <Link href="/" className="font-display text-xl tracking-[0.2em] text-cyan-100 uppercase">
+      <Link href="/" className="font-display text-xl tracking-[-0.02em] text-slate-900">
         Aura
       </Link>
 
@@ -33,10 +33,10 @@ export function SiteNav({ current, className }: SiteNavProps) {
               key={item.key}
               href={item.href}
               className={cn(
-                "rounded-lg border px-3 py-1.5 text-xs tracking-[0.15em] uppercase transition-colors md:text-sm",
+                "rounded-lg border px-3 py-1.5 text-xs font-medium tracking-[0.02em] transition-colors md:text-sm",
                 active
-                  ? "border-cyan-300/55 bg-cyan-400/15 text-cyan-100"
-                  : "border-white/10 text-slate-300 hover:border-cyan-300/35 hover:text-cyan-100",
+                  ? "border-blue-200 bg-blue-50 text-blue-700"
+                  : "border-transparent text-slate-600 hover:border-slate-200 hover:bg-slate-50 hover:text-slate-900",
               )}
             >
               {item.label}

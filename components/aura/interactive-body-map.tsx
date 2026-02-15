@@ -33,9 +33,9 @@ type EllipseShape = {
 type BodyShape = RectShape | EllipseShape;
 
 const sorenessColor: Record<SorenessLevel, string> = {
-  0: "rgba(34, 197, 94, 0.82)",
-  1: "rgba(251, 191, 36, 0.88)",
-  2: "rgba(239, 68, 68, 0.9)",
+  0: "rgba(22, 163, 74, 0.72)",
+  1: "rgba(217, 119, 6, 0.72)",
+  2: "rgba(225, 29, 72, 0.72)",
 };
 
 const sorenessLabel: Record<SorenessLevel, string> = {
@@ -128,7 +128,7 @@ export function InteractiveBodyMap({
           <Button
             type="button"
             variant="ghost"
-            className="ml-auto h-8 text-slate-300"
+            className="ml-auto h-8 text-slate-600 hover:text-slate-900"
             onClick={() => onChange(Object.fromEntries(Object.keys(value).map((key) => [key, 0])) as Record<MuscleGroup, SorenessLevel>)}
           >
             <RotateCcw className="mr-2 h-3.5 w-3.5" />
@@ -137,21 +137,21 @@ export function InteractiveBodyMap({
         ) : null}
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-slate-950/70 p-4">
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
         <svg viewBox="0 0 200 360" className="mx-auto h-[320px] w-full max-w-[220px]">
-          <circle cx="100" cy="30" r="16" fill="rgba(148,163,184,0.18)" stroke="rgba(148,163,184,0.4)" />
-          <rect x="68" y="50" width="64" height="140" rx="30" fill="rgba(148,163,184,0.12)" stroke="rgba(148,163,184,0.25)" />
-          <rect x="72" y="190" width="56" height="54" rx="20" fill="rgba(148,163,184,0.1)" stroke="rgba(148,163,184,0.2)" />
-          <rect x="70" y="242" width="24" height="108" rx="14" fill="rgba(148,163,184,0.08)" stroke="rgba(148,163,184,0.18)" />
-          <rect x="106" y="242" width="24" height="108" rx="14" fill="rgba(148,163,184,0.08)" stroke="rgba(148,163,184,0.18)" />
-          <rect x="28" y="90" width="20" height="102" rx="12" fill="rgba(148,163,184,0.08)" stroke="rgba(148,163,184,0.18)" />
-          <rect x="152" y="90" width="20" height="102" rx="12" fill="rgba(148,163,184,0.08)" stroke="rgba(148,163,184,0.18)" />
+          <circle cx="100" cy="30" r="16" fill="rgba(148,163,184,0.12)" stroke="rgba(148,163,184,0.45)" />
+          <rect x="68" y="50" width="64" height="140" rx="30" fill="rgba(148,163,184,0.08)" stroke="rgba(148,163,184,0.3)" />
+          <rect x="72" y="190" width="56" height="54" rx="20" fill="rgba(148,163,184,0.07)" stroke="rgba(148,163,184,0.24)" />
+          <rect x="70" y="242" width="24" height="108" rx="14" fill="rgba(148,163,184,0.06)" stroke="rgba(148,163,184,0.24)" />
+          <rect x="106" y="242" width="24" height="108" rx="14" fill="rgba(148,163,184,0.06)" stroke="rgba(148,163,184,0.24)" />
+          <rect x="28" y="90" width="20" height="102" rx="12" fill="rgba(148,163,184,0.06)" stroke="rgba(148,163,184,0.24)" />
+          <rect x="152" y="90" width="20" height="102" rx="12" fill="rgba(148,163,184,0.06)" stroke="rgba(148,163,184,0.24)" />
 
           {visibleShapes.map((shape, index) => {
             const level = value[shape.group] ?? 0;
             const commonProps = {
               fill: sorenessColor[level],
-              stroke: "rgba(10, 15, 22, 0.85)",
+              stroke: "rgba(30, 41, 59, 0.55)",
               strokeWidth: 1.2,
               onClick: () => toggleGroup(shape.group),
               style: {
@@ -194,9 +194,9 @@ export function InteractiveBodyMap({
           {(Object.keys(sorenessColor) as Array<`${SorenessLevel}`>).map((key) => {
             const level = Number(key) as SorenessLevel;
             return (
-              <div key={key} className="rounded-lg border border-white/10 bg-slate-900/70 p-2">
+              <div key={key} className="rounded-lg border border-slate-200 bg-white p-2">
                 <div className="mx-auto mb-1 h-2.5 w-8 rounded-full" style={{ backgroundColor: sorenessColor[level] }} />
-                <span className="tracking-[0.12em] text-slate-300">{sorenessLabel[level]}</span>
+                <span className="tracking-[0.12em] text-slate-600">{sorenessLabel[level]}</span>
               </div>
             );
           })}

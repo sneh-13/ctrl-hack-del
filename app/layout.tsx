@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Orbitron, Rajdhani } from "next/font/google";
+import { Manrope, Sora } from "next/font/google";
 
 import "./globals.css";
 
-const orbitron = Orbitron({
-  variable: "--font-orbitron",
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
-const rajdhani = Rajdhani({
-  variable: "--font-rajdhani",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -26,10 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${orbitron.variable} ${rajdhani.variable} min-h-screen font-sans antialiased`}>
-        {children}
-      </body>
+    <html lang="en">
+      <body className={`${sora.variable} ${manrope.variable} min-h-screen font-sans antialiased`}>{children}</body>
     </html>
   );
 }
