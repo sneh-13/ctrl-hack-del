@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ActivitySquare, Moon, TrendingUp } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 import { DailyCheckInModal } from "@/components/aura/daily-checkin-modal";
 import { DailyReadinessHeatmap } from "@/components/aura/daily-readiness-heatmap";
@@ -47,6 +48,8 @@ export function GoNoGoDashboard({
 }: GoNoGoDashboardProps) {
   const latestLog = logs[0];
   const palette = statePalette[readiness.state];
+  const { data: session } = useSession();
+  const firstName = session?.user?.name?.split(" ")[0];
 
   return (
     <div className="min-h-screen px-4 py-6 md:px-8 md:py-10">
@@ -55,6 +58,11 @@ export function GoNoGoDashboard({
 
         <header className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:flex-row md:items-center md:justify-between md:p-8">
           <div>
+            {firstName && (
+              <p className="mb-3 text-sm font-medium text-slate-500">
+                Welcome back, <span className="text-slate-800">{firstName}</span> 👋
+              </p>
+            )}
             <div className="mb-2 flex items-center gap-2">
               <Badge className={palette.badge}>Aura Go/No-Go</Badge>
               <Badge variant="outline" className="border-slate-300 text-slate-600">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope, Sora } from "next/font/google";
+import { Providers } from "@/components/providers";
 
 import "./globals.css";
 
@@ -27,8 +28,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning className={`${sora.variable} ${manrope.variable} min-h-screen font-sans antialiased`}>{children}</body>
+    <html lang="en">
+      <body className={`${sora.variable} ${manrope.variable} min-h-screen font-sans antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
