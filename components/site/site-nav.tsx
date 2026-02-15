@@ -8,13 +8,14 @@ import { ChevronDown, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SiteNavProps {
-  current: "home" | "dashboard" | "about" | "login" | "register";
+  current: "home" | "dashboard" | "coach" | "about" | "login" | "register";
   className?: string;
 }
 
 const items: Array<{ key: SiteNavProps["current"]; href: string; label: string }> = [
   { key: "home", href: "/", label: "Home" },
   { key: "dashboard", href: "/dashboard", label: "Dashboard" },
+  { key: "coach", href: "/coach", label: "AI Coach" },
   { key: "about", href: "/about", label: "About Us" },
 ];
 
