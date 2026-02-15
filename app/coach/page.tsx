@@ -245,10 +245,10 @@ export default function CoachPage() {
                             {/* Character display area */}
                             <div
                                 className={`relative flex h-[430px] items-end justify-center overflow-hidden ${stateColor === "emerald"
-                                        ? "bg-gradient-to-b from-emerald-50 via-emerald-100/50 to-white"
-                                        : stateColor === "amber"
-                                            ? "bg-gradient-to-b from-amber-50 via-amber-100/50 to-white"
-                                            : "bg-gradient-to-b from-rose-50 via-rose-100/50 to-white"
+                                    ? "bg-gradient-to-b from-emerald-50 via-emerald-100/50 to-white"
+                                    : stateColor === "amber"
+                                        ? "bg-gradient-to-b from-amber-50 via-amber-100/50 to-white"
+                                        : "bg-gradient-to-b from-rose-50 via-rose-100/50 to-white"
                                     }`}
                             >
                                 {/* Floor shadow */}
@@ -289,10 +289,10 @@ export default function CoachPage() {
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, y: 10 }}
                                             className={`absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-xs font-medium text-white ${stateColor === "emerald"
-                                                    ? "bg-emerald-600"
-                                                    : stateColor === "amber"
-                                                        ? "bg-amber-600"
-                                                        : "bg-rose-600"
+                                                ? "bg-emerald-600"
+                                                : stateColor === "amber"
+                                                    ? "bg-amber-600"
+                                                    : "bg-rose-600"
                                                 }`}
                                         >
                                             <span className="flex items-center gap-1.5">
@@ -358,10 +358,10 @@ export default function CoachPage() {
                                     <div className="ml-auto flex flex-col items-end gap-2">
                                         <span
                                             className={`rounded-full px-2.5 py-1 text-xs font-bold ${readiness.state === "green"
-                                                    ? "bg-emerald-100 text-emerald-700"
-                                                    : readiness.state === "yellow"
-                                                        ? "bg-amber-100 text-amber-700"
-                                                        : "bg-rose-100 text-rose-700"
+                                                ? "bg-emerald-100 text-emerald-700"
+                                                : readiness.state === "yellow"
+                                                    ? "bg-amber-100 text-amber-700"
+                                                    : "bg-rose-100 text-rose-700"
                                                 }`}
                                         >
                                             {readiness.score}/100
@@ -390,18 +390,18 @@ export default function CoachPage() {
                     >
                         <div
                             className={`flex h-10 w-10 items-center justify-center rounded-full ${stateColor === "emerald"
-                                    ? "bg-emerald-100"
-                                    : stateColor === "amber"
-                                        ? "bg-amber-100"
-                                        : "bg-rose-100"
+                                ? "bg-emerald-100"
+                                : stateColor === "amber"
+                                    ? "bg-amber-100"
+                                    : "bg-rose-100"
                                 }`}
                         >
                             <Bot
                                 className={`h-5 w-5 ${stateColor === "emerald"
-                                        ? "text-emerald-600"
-                                        : stateColor === "amber"
-                                            ? "text-amber-600"
-                                            : "text-rose-600"
+                                    ? "text-emerald-600"
+                                    : stateColor === "amber"
+                                        ? "text-amber-600"
+                                        : "text-rose-600"
                                     }`}
                             />
                         </div>
@@ -432,18 +432,18 @@ export default function CoachPage() {
                                     {msg.role === "assistant" && (
                                         <div
                                             className={`mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${stateColor === "emerald"
-                                                    ? "bg-emerald-100"
-                                                    : stateColor === "amber"
-                                                        ? "bg-amber-100"
-                                                        : "bg-rose-100"
+                                                ? "bg-emerald-100"
+                                                : stateColor === "amber"
+                                                    ? "bg-amber-100"
+                                                    : "bg-rose-100"
                                                 }`}
                                         >
                                             <Bot
                                                 className={`h-4 w-4 ${stateColor === "emerald"
-                                                        ? "text-emerald-600"
-                                                        : stateColor === "amber"
-                                                            ? "text-amber-600"
-                                                            : "text-rose-600"
+                                                    ? "text-emerald-600"
+                                                    : stateColor === "amber"
+                                                        ? "text-amber-600"
+                                                        : "text-rose-600"
                                                     }`}
                                             />
                                         </div>
@@ -452,8 +452,8 @@ export default function CoachPage() {
                                     <div>
                                         <div
                                             className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${msg.role === "user"
-                                                    ? "bg-slate-800 text-white"
-                                                    : "border border-slate-100 bg-slate-50 text-slate-700"
+                                                ? "bg-slate-800 text-white"
+                                                : "border border-slate-100 bg-slate-50 text-slate-700"
                                                 }`}
                                         >
                                             <p dangerouslySetInnerHTML={{ __html: renderText(msg.text) }} />
@@ -525,7 +525,11 @@ export default function CoachPage() {
                                 type="text"
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
-                                placeholder="Talk to Coach Aura..."
+                                placeholder={
+                                    characterMode === "satima"
+                                        ? "Talk to Satima..."
+                                        : "Talk to Coach Aura..."
+                                }
                                 disabled={loading}
                                 className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-slate-300 focus:bg-white focus:shadow-sm disabled:opacity-50"
                             />
@@ -533,10 +537,10 @@ export default function CoachPage() {
                                 type="submit"
                                 disabled={loading || !input.trim()}
                                 className={`h-11 w-11 rounded-xl shadow-md transition-transform hover:scale-105 disabled:opacity-40 ${stateColor === "emerald"
-                                        ? "bg-emerald-600 hover:bg-emerald-700"
-                                        : stateColor === "amber"
-                                            ? "bg-amber-600 hover:bg-amber-700"
-                                            : "bg-rose-600 hover:bg-rose-700"
+                                    ? "bg-emerald-600 hover:bg-emerald-700"
+                                    : stateColor === "amber"
+                                        ? "bg-amber-600 hover:bg-amber-700"
+                                        : "bg-rose-600 hover:bg-rose-700"
                                     }`}
                             >
                                 <Send className="h-4 w-4 text-white" />
