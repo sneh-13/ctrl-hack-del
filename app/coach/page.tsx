@@ -5,6 +5,7 @@ import { Bot, Send, Volume2, VolumeX } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { CoachCharacter } from "@/components/aura/coach-character";
+import { SatimaCharacter } from "@/components/aura/satima-character";
 import { SiteNav } from "@/components/site/site-nav";
 import { Button } from "@/components/ui/button";
 import { buildReadinessScore, mockDailyLog, mockUserProfile } from "@/lib/mock-data";
@@ -25,7 +26,10 @@ const SUGGESTED_PROMPTS = [
     "What's my peak training window?",
 ];
 
+const SATIMA_REPLY = "100 push-ups, 100 sit-ups, 100 squats, and a 10 km run. Every single day.";
+
 type Mood = "happy" | "neutral" | "thinking" | "encouraging";
+type CharacterMode = "aura" | "satima";
 
 export default function CoachPage() {
     const [logs] = useState<DailyLogs[]>([mockDailyLog]);
@@ -42,6 +46,9 @@ export default function CoachPage() {
     const [speaking, setSpeaking] = useState(false);
     const [ttsAvailable, setTtsAvailable] = useState(true);
     const [mood, setMood] = useState<Mood>("happy");
+    const [characterMode, setCharacterMode] = useState<CharacterMode>("aura");
+    const [impacting, setImpacting] = useState(false);
+    const [impactFxId, setImpactFxId] = useState(0);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -72,9 +79,19 @@ export default function CoachPage() {
 
     const sendMessage = useCallback(
         async (text: string) => {
-            if (!text.trim() || loading) return;
-            setMessages((prev) => [...prev, { id: `u-${Date.now()}`, role: "user", text: text.trim() }]);
+            const trimmed = text.trim();
+            if (!trimmed || loading) return;
+
+            const now = Date.now();
+            setMessages((prev) => [...prev, { id: `u-${now}`, role: "user", text: trimmed }]);
             setInput("");
+
+            if (characterMode === "satima") {
+                setMessages((prev) => [...prev, { id: `a-${now + 1}`, role: "assistant", text: SATIMA_REPLY }]);
+                setMood("neutral");
+                return;
+            }
+
             setLoading(true);
             setMood("thinking");
 
@@ -83,7 +100,7 @@ export default function CoachPage() {
                 const res = await fetch("/api/ai/chat", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: text.trim(), profile, readiness, latestLog, history }),
+                    body: JSON.stringify({ message: trimmed, profile, readiness, latestLog, history }),
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || "Failed");
@@ -101,7 +118,7 @@ export default function CoachPage() {
                 setLoading(false);
             }
         },
-        [loading, messages, profile, readiness, latestLog]
+        [loading, characterMode, messages, profile, readiness, latestLog]
     );
 
     const speakText = useCallback(
@@ -142,10 +159,80 @@ export default function CoachPage() {
         [speaking]
     );
 
+    const triggerSatimaImpact = useCallback(() => {
+        if (impacting) return;
+        setImpactFxId((prev) => prev + 1);
+        setImpacting(true);
+        setMood("encouraging");
+        window.setTimeout(() => setCharacterMode("satima"), 180);
+        window.setTimeout(() => setImpacting(false), 1000);
+    }, [impacting]);
+
+    const switchToAura = useCallback(() => {
+        if (impacting) return;
+        setCharacterMode("aura");
+        setMood("happy");
+    }, [impacting]);
+
     const renderText = (text: string) => text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    const characterName = characterMode === "satima" ? "Satima" : "Coach Aura";
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
+        <motion.div
+            className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50"
+            animate={
+                impacting
+                    ? {
+                        x: [0, -14, 13, -11, 8, -6, 4, -2, 0],
+                        y: [0, 5, -4, 3, -2, 2, -1, 1, 0],
+                        rotate: [0, -1.3, 1.1, -0.8, 0.5, -0.35, 0.2, -0.1, 0],
+                    }
+                    : { x: 0, y: 0, rotate: 0 }
+            }
+            transition={
+                impacting
+                    ? {
+                        duration: 1,
+                        ease: "easeInOut",
+                        times: [0, 0.12, 0.24, 0.36, 0.5, 0.66, 0.82, 0.92, 1],
+                    }
+                    : { duration: 0.2 }
+            }
+        >
+            <AnimatePresence>
+                {impacting && (
+                    <motion.div
+                        key={`impact-${impactFxId}`}
+                        className="pointer-events-none fixed inset-0 z-[100] overflow-hidden"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <motion.div
+                            className="absolute inset-0 bg-white/10"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: [0, 0.25, 0] }}
+                            transition={{ duration: 0.55, ease: "easeOut" }}
+                        />
+                        {Array.from({ length: 12 }).map((_, index) => (
+                            <motion.span
+                                key={`shard-${index}`}
+                                className="absolute left-1/2 top-1/2 block h-[2px] w-44 origin-left bg-white/85 shadow-[0_0_14px_rgba(255,255,255,0.7)]"
+                                style={{ transform: `translate(-50%, -50%) rotate(${index * 30}deg)` }}
+                                initial={{ scaleX: 0, opacity: 0 }}
+                                animate={{ scaleX: [0, 1.15, 0.35], opacity: [0, 0.95, 0] }}
+                                transition={{ duration: 0.85, ease: "easeOut", delay: index * 0.01 }}
+                            />
+                        ))}
+                        <motion.div
+                            className="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white/80"
+                            initial={{ scale: 0.3, opacity: 0 }}
+                            animate={{ scale: [0.3, 2.2, 2.6], opacity: [0, 1, 0] }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <div className="mx-auto max-w-7xl px-4 pt-6">
                 <SiteNav current="coach" />
             </div>
@@ -167,10 +254,32 @@ export default function CoachPage() {
                                 {/* Floor shadow */}
                                 <div className="absolute bottom-4 h-4 w-48 rounded-full bg-black/5 blur-md" />
 
-                                {/* The animated character */}
-                                <div className="relative -mb-2">
-                                    <CoachCharacter speaking={speaking} mood={mood} stateColor={stateColor} />
-                                </div>
+                                {/* The character (Aura / Satima) */}
+                                <AnimatePresence mode="wait" initial={false}>
+                                    {characterMode === "aura" ? (
+                                        <motion.div
+                                            key="aura-character"
+                                            className="relative -mb-2"
+                                            initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 16, scale: 0.94 }}
+                                            transition={{ duration: 0.35, ease: "easeOut" }}
+                                        >
+                                            <CoachCharacter speaking={speaking} mood={mood} stateColor={stateColor} />
+                                        </motion.div>
+                                    ) : (
+                                        <motion.div
+                                            key={`satima-character-${impactFxId}`}
+                                            className="relative -mb-2"
+                                            initial={{ opacity: 0, y: 110, scale: 0.72, rotate: -5 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+                                            exit={{ opacity: 0, y: 16, scale: 0.95 }}
+                                            transition={{ type: "spring", stiffness: 190, damping: 18 }}
+                                        >
+                                            <SatimaCharacter impacting={impacting} />
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
 
                                 {/* Speaking indicator */}
                                 <AnimatePresence>
@@ -215,21 +324,58 @@ export default function CoachPage() {
 
                             {/* Character info card */}
                             <div className="border-t border-slate-100 px-5 py-4">
-                                <div className="flex items-center gap-3">
-                                    <div>
-                                        <h2 className="text-base font-bold text-slate-900">Coach Aura</h2>
-                                        <p className="text-xs text-slate-500">AI Fitness Coach • Personalized to you</p>
+                                <div className="flex items-start gap-3">
+                                    <div className="min-w-0">
+                                        <h2 className="text-base font-bold text-slate-900">{characterName}</h2>
+                                        <p className="text-xs text-slate-500">
+                                            {characterMode === "satima"
+                                                ? "Impact mode enabled • You summoned Satima"
+                                                : "AI Fitness Coach • Personalized to you"}
+                                        </p>
+                                        <div className="mt-2 flex items-center gap-2">
+                                            <button
+                                                onClick={switchToAura}
+                                                disabled={impacting}
+                                                className={`rounded-full border px-3 py-1 text-xs font-semibold transition-all ${characterMode === "aura"
+                                                    ? "border-slate-900 bg-slate-900 text-white"
+                                                    : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                                                    } disabled:cursor-not-allowed disabled:opacity-60`}
+                                            >
+                                                Aura
+                                            </button>
+                                            <button
+                                                onClick={triggerSatimaImpact}
+                                                disabled={impacting}
+                                                className={`rounded-full border px-3 py-1 text-xs font-semibold transition-all ${characterMode === "satima"
+                                                    ? "border-rose-500 bg-rose-500 text-white"
+                                                    : "border-rose-200 bg-rose-50 text-rose-700 hover:border-rose-300 hover:bg-rose-100"
+                                                    } disabled:cursor-not-allowed disabled:opacity-60`}
+                                            >
+                                                Satima
+                                            </button>
+                                        </div>
                                     </div>
-                                    <span
-                                        className={`ml-auto rounded-full px-2.5 py-1 text-xs font-bold ${readiness.state === "green"
-                                                ? "bg-emerald-100 text-emerald-700"
-                                                : readiness.state === "yellow"
-                                                    ? "bg-amber-100 text-amber-700"
-                                                    : "bg-rose-100 text-rose-700"
-                                            }`}
-                                    >
-                                        {readiness.score}/100
-                                    </span>
+                                    <div className="ml-auto flex flex-col items-end gap-2">
+                                        <span
+                                            className={`rounded-full px-2.5 py-1 text-xs font-bold ${readiness.state === "green"
+                                                    ? "bg-emerald-100 text-emerald-700"
+                                                    : readiness.state === "yellow"
+                                                        ? "bg-amber-100 text-amber-700"
+                                                        : "bg-rose-100 text-rose-700"
+                                                }`}
+                                        >
+                                            {readiness.score}/100
+                                        </span>
+                                        {characterMode === "satima" && (
+                                            <motion.span
+                                                initial={{ opacity: 0, y: 6 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-rose-700"
+                                            >
+                                                Impact Mode
+                                            </motion.span>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -260,9 +406,15 @@ export default function CoachPage() {
                             />
                         </div>
                         <div>
-                            <h3 className="text-sm font-bold text-slate-900">Coach Aura</h3>
+                            <h3 className="text-sm font-bold text-slate-900">{characterName}</h3>
                             <p className="text-xs text-slate-500">
-                                {speaking ? "Speaking..." : loading ? "Thinking..." : "Ready to help"}
+                                {characterMode === "satima"
+                                    ? "Impact mode online"
+                                    : speaking
+                                        ? "Speaking..."
+                                        : loading
+                                            ? "Thinking..."
+                                            : "Ready to help"}
                             </p>
                         </div>
                     </div>
@@ -393,6 +545,6 @@ export default function CoachPage() {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }

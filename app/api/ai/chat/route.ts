@@ -87,6 +87,12 @@ Respond as Aura:`;
         return NextResponse.json({ reply });
     } catch (error) {
         console.error("[AI Chat Error]", error);
+        if (error instanceof Error && error.message.includes("GEMINI_API_KEY")) {
+            return NextResponse.json(
+                { error: "Gemini API key not configured. Add GEMINI_API_KEY to .env.local" },
+                { status: 503 }
+            );
+        }
         return NextResponse.json(
             { error: "Failed to generate response. Please try again." },
             { status: 500 }
