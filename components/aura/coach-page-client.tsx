@@ -9,6 +9,7 @@ import { SatimaCharacter } from "@/components/aura/satima-character";
 import { SiteNav } from "@/components/site/site-nav";
 import { Button } from "@/components/ui/button";
 import { buildReadinessScore, mockDailyLog, mockUserProfile } from "@/lib/mock-data";
+import { useLanguage } from "@/components/providers/language-provider";
 import type { DailyLogs } from "@/types";
 
 interface ChatMessage {
@@ -33,11 +34,13 @@ type CharacterMode = "aura" | "satima";
 
 export default function CoachPage() {
     const [logs] = useState<DailyLogs[]>([mockDailyLog]);
+    const { language, voiceId } = useLanguage();
     const profile = mockUserProfile;
     const readiness = useMemo(
         () => buildReadinessScore(profile, logs[0] ?? mockDailyLog),
         [logs, profile]
     );
+
     const latestLog = logs[0];
 
     const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -66,16 +69,46 @@ export default function CoachPage() {
 
     // Initial greeting
     useEffect(() => {
+        // Simple greetings map — real app would generate this dynamically via API or more complex logic
+        const greetings = {
+            en: {
+                green: `Hey! Looking **strong** today — readiness at ${readiness.score}/100. You're cleared for high-intensity work. What do you want to focus on?`,
+                yellow: `Your readiness is at ${readiness.score}/100 — decent but not peak. Let's be **strategic** about today's session. How can I help?`,
+                red: `Readiness is at ${readiness.score}/100 — your body's signaling for recovery. Let me help you plan a **smart recovery session**.`
+            },
+            es: {
+                green: `¡Hola! Te ves **fuerte** hoy — preparación al ${readiness.score}/100. Tienes luz verde para alta intensidad. ¿En qué quieres enfocarte?`,
+                yellow: `Tu preparación está al ${readiness.score}/100 — decente pero no al máximo. Seamos **estratégicos** hoy. ¿Cómo puedo ayudarte?`,
+                red: `Preparación al ${readiness.score}/100 — tu cuerpo pide recuperación. Planifiquemos una **sesión de recuperación inteligente**.`
+            },
+            fr: {
+                green: `Salut! Tu as l'air **en forme** — préparation à ${readiness.score}/100. Feu vert pour l'intensité. Sur quoi veux-tu te concentrer?`,
+                yellow: `Préparation à ${readiness.score}/100 — correct mais pas au top. Soyons **stratégiques**. Comment puis-je t'aider?`,
+                red: `Préparation à ${readiness.score}/100 — ton corps réclame du repos. Planifions une **séance de récupération**.`
+            },
+            de: {
+                green: `Hey! Du siehst **stark** aus — Bereitschaft ${readiness.score}/100. Bereit für hohe Intensität. Worauf willst du dich konzentrieren?`,
+                yellow: `Bereitschaft bei ${readiness.score}/100 — okay, aber nicht spitze. Lass uns **strategisch** trainieren. Wie kann ich helfen?`,
+                red: `Bereitschaft bei ${readiness.score}/100 — dein Körper braucht Erholung. Lass uns eine **Regenerations-Session** planen.`
+            },
+            ja: {
+                green: `こんにちは！今日は**調子が良さそう**ですね — コンディション ${readiness.score}/100。高強度トレーニングOKです。何に集中しますか？`,
+                yellow: `コンディションは ${readiness.score}/100 — 悪くないですが最高ではありません。**戦略的**に行きましょう。どうしますか？`,
+                red: `コンディション ${readiness.score}/100 — 体が回復を求めています。**賢いリカバリー**を計画しましょう。`
+            }
+        };
+
+        const langGreetings = greetings[language] || greetings.en;
         const greeting =
             readiness.state === "green"
-                ? `Hey! Looking **strong** today — readiness at ${readiness.score}/100. You're cleared for high-intensity work. What do you want to focus on?`
+                ? langGreetings.green
                 : readiness.state === "yellow"
-                    ? `Your readiness is at ${readiness.score}/100 — decent but not peak. Let's be **strategic** about today's session. How can I help?`
-                    : `Readiness is at ${readiness.score}/100 — your body's signaling for recovery. Let me help you plan a **smart recovery session**.`;
+                    ? langGreetings.yellow
+                    : langGreetings.red;
 
         setMessages([{ id: "greeting", role: "assistant", text: greeting }]);
         setMood(readiness.state === "green" ? "encouraging" : "neutral");
-    }, [readiness.score, readiness.state]);
+    }, [readiness.score, readiness.state, language]);
 
     const sendMessage = useCallback(
         async (text: string) => {
@@ -100,7 +133,7 @@ export default function CoachPage() {
                 const res = await fetch("/api/ai/chat", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: trimmed, profile, readiness, latestLog, history }),
+                    body: JSON.stringify({ message: trimmed, profile, readiness, latestLog, history, language }),
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || "Failed");
@@ -118,7 +151,7 @@ export default function CoachPage() {
                 setLoading(false);
             }
         },
-        [loading, characterMode, messages, profile, readiness, latestLog]
+        [loading, characterMode, messages, profile, readiness, latestLog, language]
     );
 
     const speakText = useCallback(
@@ -135,7 +168,7 @@ export default function CoachPage() {
                 const res = await fetch("/api/ai/tts", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ text: text.replace(/\*\*/g, "") }),
+                    body: JSON.stringify({ text: text.replace(/\*\*/g, ""), voiceId }),
                 });
                 if (!res.ok) {
                     if (res.status === 503) setTtsAvailable(false);
@@ -156,7 +189,7 @@ export default function CoachPage() {
                 setMood("neutral");
             }
         },
-        [speaking]
+        [speaking, voiceId]
     );
 
     const triggerSatimaImpact = useCallback(() => {

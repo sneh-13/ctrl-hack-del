@@ -41,11 +41,20 @@ PERSONALITY:
 
 export async function POST(req: NextRequest) {
     try {
-        const { message, profile, readiness, latestLog, history } = await req.json();
+        const { message, profile, readiness, latestLog, history, language } = await req.json();
 
         if (!message || typeof message !== "string") {
             return NextResponse.json({ error: "No message provided" }, { status: 400 });
         }
+
+        const languageNames: Record<string, string> = {
+            en: "English",
+            es: "Spanish",
+            fr: "French",
+            de: "German",
+            ja: "Japanese",
+        };
+        const targetLanguage = languageNames[language as keyof typeof languageNames] || "English";
 
         // Build context prompt with user's current data
         const contextBlock = `
@@ -67,7 +76,11 @@ LATEST LOG:
 - RPE: ${latestLog?.lastSessionRpe ?? "unknown"}/10
 - Soreness: ${latestLog?.subjectiveSoreness ?? "unknown"}/10
 - Sore muscles: ${JSON.stringify(latestLog?.muscleSoreness ?? {})}
-- Yesterday's workout: ${latestLog?.yesterdayWorkout ?? "none logged"}`;
+- Yesterday's workout: ${latestLog?.yesterdayWorkout ?? "none logged"}
+
+LANGUAGE INSTRUCTION:
+- You MUST reply in **${targetLanguage}**.
+- Use the appropriate cultural fitness terminology for ${targetLanguage}.`;
 
         // Build conversation history for multi-turn context
         const historyContext = (history || [])
@@ -79,7 +92,7 @@ LATEST LOG:
 ${historyContext ? `CONVERSATION SO FAR:\n${historyContext}\n` : ""}
 User: ${message}
 
-Respond as Aura:`;
+Respond as Aura in ${targetLanguage}:`;
 
         const reply = await geminiGenerate(fullPrompt, AURA_SYSTEM_PROMPT);
 

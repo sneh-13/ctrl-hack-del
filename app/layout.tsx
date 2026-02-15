@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope, Sora } from "next/font/google";
 import { Providers } from "@/components/providers";
+import { LanguageProvider } from "@/components/providers/language-provider";
 
 import "./globals.css";
 
@@ -30,7 +31,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sora.variable} ${manrope.variable} min-h-screen font-sans antialiased`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <LanguageProvider>
+            {children}
+          </LanguageProvider>
+        </Providers>
       </body>
     </html>
   );

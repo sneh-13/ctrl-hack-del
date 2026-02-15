@@ -3,9 +3,39 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { ChevronDown, History, LogOut } from "lucide-react";
+import { ChevronDown, History, LogOut, Globe } from "lucide-react";
+import { useLanguage, type LanguageCode } from "@/components/providers/language-provider";
 
 import { cn } from "@/lib/utils";
+
+function LanguageSelector() {
+  const { language, setLanguage } = useLanguage();
+
+  const languages: { code: LanguageCode; label: string }[] = [
+    { code: "en", label: "English" },
+    { code: "es", label: "Español" },
+    { code: "fr", label: "Français" },
+    { code: "de", label: "Deutsch" },
+    { code: "ja", label: "日本語" },
+  ];
+
+  return (
+    <div className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2 py-1.5">
+      <Globe className="h-3.5 w-3.5 text-slate-400" />
+      <select
+        value={language}
+        onChange={(e) => setLanguage(e.target.value as LanguageCode)}
+        className="bg-transparent text-xs font-medium text-slate-700 outline-none"
+      >
+        {languages.map((lang) => (
+          <option key={lang.code} value={lang.code}>
+            {lang.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
 
 interface SiteNavProps {
   current: "home" | "dashboard" | "coach" | "about" | "login" | "register" | "history";
@@ -51,6 +81,10 @@ export function SiteNav({ current, className, suppressActive = false }: SiteNavP
       </Link>
 
       <div className="flex items-center gap-2">
+        <div className="mr-2 hidden md:block">
+          <LanguageSelector />
+        </div>
+
         {items.map((item) => {
           const requiresAuth = item.key === "dashboard" || item.key === "coach";
           const locked = !session && requiresAuth;
@@ -106,6 +140,10 @@ export function SiteNav({ current, className, suppressActive = false }: SiteNavP
                 <div className="border-b border-slate-100 px-3 py-2.5">
                   <p className="text-xs font-medium text-slate-900">{session.user?.name}</p>
                   <p className="truncate text-xs text-slate-400">{session.user?.email}</p>
+                </div>
+                <div className="border-b border-slate-100 p-2 md:hidden">
+                  <p className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">Language</p>
+                  <LanguageSelector />
                 </div>
                 <button
                   onClick={() => {
