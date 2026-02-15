@@ -175,8 +175,7 @@ export default function AboutPage() {
                 <p className="text-sm font-medium text-blue-600">Readiness Engine & Architecture</p>
                 <p className="mt-1 text-xs text-slate-400">Computer Engineering · TMU · 3rd Year</p>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  Designed the readiness scoring algorithm and Go/No-Go decision engine.
-                  Leads system architecture and real-time data pipeline design.
+                  Driven by evidence-based strength training. Focused on readiness, recovery, and training intensity that matches the body's signals.
                 </p>
               </div>
             </Reveal>
@@ -191,8 +190,7 @@ export default function AboutPage() {
                 <p className="text-sm font-medium text-blue-600">Circadian Modeling & Visualization</p>
                 <p className="mt-1 text-xs text-slate-400">Computer Science · Western University · 3rd Year</p>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  Built the circadian rhythm engine and 24-hour energy clock. Developed the interactive
-                  body map and front-end data visualizations.
+                  Obsessed with circadian performance. Interested in biological prime time, energy rhythms, and timing training for peak output.
                 </p>
               </div>
             </Reveal>
@@ -207,8 +205,7 @@ export default function AboutPage() {
                 <p className="text-sm font-medium text-blue-600">Full-Stack Development & UX</p>
                 <p className="mt-1 text-xs text-slate-400">Computer Science · TMU · 3rd Year</p>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  Owns the full-stack integration, onboarding flow, and daily check-in system.
-                  Drives UI/UX design and responsive layout across the platform.
+                  Into performance systems and consistency. Focused on sustainable training habits, smart fatigue management, and long-term progression.
                 </p>
               </div>
             </Reveal>
