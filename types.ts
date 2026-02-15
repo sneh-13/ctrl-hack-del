@@ -39,7 +39,6 @@ export interface UserFitnessProfile {
 export interface DailyLogs {
   date: string;
   sleepDurationHours: number;
-  bedTime: string;
   wakeTime: string;
   stress: number;
   yesterdayWorkout: string;
