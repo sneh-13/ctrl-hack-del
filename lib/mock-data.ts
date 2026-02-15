@@ -147,6 +147,24 @@ export const mockUserProfile: UserFitnessProfile = {
   timezone: "America/New_York",
 };
 
+export const RESET_BASELINE_DATE_ISO = "2026-02-15T12:00:00.000Z";
+
+export function buildFreshAccountLog(
+  profile: UserFitnessProfile,
+  date: string = RESET_BASELINE_DATE_ISO,
+): DailyLogs {
+  return {
+    date,
+    sleepDurationHours: profile.targetSleepHours,
+    wakeTime: profile.wakeTime,
+    stress: 0,
+    yesterdayWorkout: "",
+    lastSessionRpe: 0,
+    subjectiveSoreness: 0,
+    muscleSoreness: { ...emptyMuscleSoreness },
+  };
+}
+
 export const mockDailyLog: DailyLogs = {
   date: new Date().toISOString(),
   sleepDurationHours: 7.1,
@@ -177,8 +195,8 @@ function clamp(value: number, min: number, max: number) {
 }
 
 function getReadinessState(score: number): ReadinessState {
-  if (score >= 70) return "green";
-  if (score >= 45) return "yellow";
+  if (score >= 85) return "green";
+  if (score >= 30) return "yellow";
   return "red";
 }
 

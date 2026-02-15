@@ -114,3 +114,19 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ log: normalizeLog(saved) }, { status: 201 });
 }
+
+export async function DELETE() {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  await connectToDatabase();
+
+  const result = await DailyLog.deleteMany({ userId: session.user.id });
+
+  return NextResponse.json({
+    ok: true,
+    deletedCount: result.deletedCount ?? 0,
+  });
+}

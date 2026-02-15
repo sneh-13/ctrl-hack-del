@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { CalendarDays, Dumbbell, Moon, TriangleAlert } from "lucide-react";
+import { CalendarDays, Dumbbell, Loader2, Moon, RotateCcw, TriangleAlert } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import { SiteNav } from "@/components/site/site-nav";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { DailyLogs } from "@/types";
 
@@ -39,9 +41,11 @@ function readinessPillClass(state?: DailyLogs["readinessState"]): string {
 
 export default function HistoryPage() {
   const { status } = useSession();
+  const router = useRouter();
   const [logs, setLogs] = useState<DailyLogs[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [resetting, setResetting] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -96,17 +100,61 @@ export default function HistoryPage() {
     };
   }, [logs]);
 
+  const resetAccountData = async () => {
+    const confirmed = window.confirm(
+      "Delete all saved check-ins for this account and reset dashboard data to fresh defaults starting February 15, 2026?"
+    );
+    if (!confirmed) return;
+
+    setResetting(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/logs", { method: "DELETE" });
+      const data = (await res.json()) as { error?: string };
+      if (!res.ok) throw new Error(data.error || "Failed to reset account data");
+
+      setLogs([]);
+      router.push("/dashboard");
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to reset account data");
+    } finally {
+      setResetting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen px-4 py-6 md:px-8 md:py-10">
       <div className="mx-auto w-full max-w-6xl space-y-6">
         <SiteNav current="history" />
 
         <header className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm md:p-8">
-          <p className="text-xs font-semibold tracking-[0.12em] text-slate-500 uppercase">Account History</p>
-          <h1 className="mt-2 text-3xl text-slate-900 md:text-4xl">Daily Check-in History</h1>
-          <p className="mt-1 text-sm text-slate-600">
-            Every submitted check-in is saved to your account and shown here.
-          </p>
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p className="text-xs font-semibold tracking-[0.12em] text-slate-500 uppercase">Account History</p>
+              <h1 className="mt-2 text-3xl text-slate-900 md:text-4xl">Daily Check-in History</h1>
+              <p className="mt-1 text-sm text-slate-600">
+                Every submitted check-in is saved to your account and shown here.
+              </p>
+            </div>
+
+            {status === "authenticated" && (
+              <Button
+                variant="destructive"
+                className="h-10 rounded-xl"
+                onClick={() => void resetAccountData()}
+                disabled={resetting}
+              >
+                {resetting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <RotateCcw className="h-4 w-4" />
+                )}
+                Reset Account Data
+              </Button>
+            )}
+          </div>
         </header>
 
         {status === "unauthenticated" && (

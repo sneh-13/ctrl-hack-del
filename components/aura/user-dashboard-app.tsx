@@ -4,82 +4,72 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import { GoNoGoDashboard } from "@/components/aura/go-no-go-dashboard";
-import { buildReadinessScore, mockDailyLog, mockUserProfile, muscleGroups } from "@/lib/mock-data";
-import type { DailyLogs, MuscleGroup, SorenessLevel } from "@/types";
+import {
+  buildFreshAccountLog,
+  buildReadinessScore,
+  mockDailyLog,
+  mockUserProfile,
+  RESET_BASELINE_DATE_ISO,
+} from "@/lib/mock-data";
+import type { DailyLogs } from "@/types";
 
 function mergeLog(logs: DailyLogs[], incoming: DailyLogs): DailyLogs[] {
   const filtered = logs.filter((item) => item.date !== incoming.date);
   return [incoming, ...filtered].sort((a, b) => b.date.localeCompare(a.date));
 }
 
-function subjectiveDropPerDay(value: number): number {
-  if (value >= 8) return 3;
-  if (value >= 6) return 4;
-  if (value >= 5) return 5;
-  return 5;
-}
-
-function projectSubjectiveSoreness(today: number): number {
-  const drop = subjectiveDropPerDay(today);
-  return Math.max(0, Math.round(today - drop));
-}
-
-function mapSorenessScore(muscleSoreness: Record<MuscleGroup, SorenessLevel>): number {
-  const total = muscleGroups.reduce((sum, group) => sum + (muscleSoreness[group] ?? 0), 0);
-  return Math.round((total / (muscleGroups.length * 2)) * 10);
-}
-
 function buildNextDemoDate(existingLogs: DailyLogs[]): string {
   const latest = existingLogs[0];
   if (!latest) {
-    const now = new Date();
-    now.setUTCHours(12, 0, 0, 0);
-    return now.toISOString();
+    return RESET_BASELINE_DATE_ISO;
   }
 
   const latestDate = new Date(latest.date);
-  const base = Number.isNaN(latestDate.getTime()) ? new Date() : latestDate;
+  const base = Number.isNaN(latestDate.getTime()) ? new Date(RESET_BASELINE_DATE_ISO) : latestDate;
   const next = new Date(base);
   next.setUTCDate(base.getUTCDate() + 1);
   next.setUTCHours(12, 0, 0, 0);
   return next.toISOString();
 }
 
-function applyRecoveryCarryover(incoming: DailyLogs, previous?: DailyLogs): DailyLogs {
-  if (!previous) return incoming;
-
-  const todaySoreness = Math.max(incoming.subjectiveSoreness, mapSorenessScore(incoming.muscleSoreness));
-  const levelDrop = 1;
-
-  const nextMuscleSoreness = {} as Record<MuscleGroup, SorenessLevel>;
-
-  for (const group of muscleGroups) {
-    const current = incoming.muscleSoreness[group] ?? previous.muscleSoreness[group] ?? 0;
-    nextMuscleSoreness[group] = Math.max(0, current - levelDrop) as SorenessLevel;
-  }
-
-  const autoSubjective = projectSubjectiveSoreness(todaySoreness);
-  const mapDrivenFloor = mapSorenessScore(nextMuscleSoreness);
-
-  return {
-    ...incoming,
-    muscleSoreness: nextMuscleSoreness,
-    subjectiveSoreness: Math.max(autoSubjective, mapDrivenFloor),
-  };
-}
-
+/**
+ * Stamp the log with the next demo date. Muscle soreness is kept as-is —
+ * the recovery algorithm in lib/recovery.ts handles state transitions
+ * based on actual date differences.
+ */
 function projectDemoLog(log: DailyLogs, existingLogs: DailyLogs[]): DailyLogs {
   const nextDate = buildNextDemoDate(existingLogs);
-  return applyRecoveryCarryover({ ...log, date: nextDate }, existingLogs[0]);
+  return { ...log, date: nextDate };
 }
 
 export function UserDashboardApp() {
   const { data: session, status } = useSession();
   const [logs, setLogs] = useState<DailyLogs[]>([]);
+  const freshDefaultLog = useMemo(() => buildFreshAccountLog(mockUserProfile), []);
+  const activeLog = useMemo(() => {
+    if (status === "authenticated") {
+      return logs[0] ?? freshDefaultLog;
+    }
+
+    return logs[0] ?? mockDailyLog;
+  }, [freshDefaultLog, logs, status]);
 
   const readiness = useMemo(
-    () => buildReadinessScore(mockUserProfile, logs[0] ?? mockDailyLog, logs),
-    [logs],
+    () => {
+      const computed = buildReadinessScore(mockUserProfile, activeLog, logs);
+
+      // Fresh authenticated account (or just-reset account) starts at full readiness.
+      if (status === "authenticated" && logs.length === 0) {
+        return {
+          ...computed,
+          score: 100,
+          state: "green" as const,
+        };
+      }
+
+      return computed;
+    },
+    [activeLog, logs, status],
   );
 
   useEffect(() => {

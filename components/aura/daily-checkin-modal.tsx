@@ -18,8 +18,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { Textarea } from "@/components/ui/textarea";
 import { MUSCLE_GROUPS, type StatusType } from "@/lib/bodymap-data";
+import { RESET_BASELINE_DATE_ISO } from "@/lib/mock-data";
 import type { DailyLogs, MuscleGroup, SorenessLevel, UserFitnessProfile } from "@/types";
 
 interface DailyCheckInModalProps {
@@ -40,11 +40,15 @@ type CheckInForm = {
   statusByGroup: Record<string, StatusType | undefined>;
 };
 
-/** Map SorenessLevel (legacy) → StatusType */
-function levelToStatus(level: SorenessLevel): StatusType | undefined {
-  if (level === 2) return "sore";
-  if (level === 1) return "recovering";
-  return "recovered";
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+function buildNextCheckInDate(latestLog?: DailyLogs): Date {
+  if (!latestLog) return new Date(RESET_BASELINE_DATE_ISO);
+
+  const latestDate = new Date(latestLog.date);
+  if (Number.isNaN(latestDate.getTime())) return new Date(RESET_BASELINE_DATE_ISO);
+
+  return new Date(latestDate.getTime() + ONE_DAY_MS);
 }
 
 /** Map StatusType → SorenessLevel for DailyLogs submission */
@@ -55,25 +59,16 @@ function statusToLevel(status: StatusType | undefined): SorenessLevel {
   return 0;
 }
 
-function createInitialForm(profile: UserFitnessProfile, latestLog?: DailyLogs): CheckInForm {
-  const statusByGroup: Record<string, StatusType | undefined> = {};
-  if (latestLog?.muscleSoreness) {
-    for (const [key, level] of Object.entries(latestLog.muscleSoreness)) {
-      const status = levelToStatus(level as SorenessLevel);
-      if (status !== undefined) statusByGroup[key] = status;
-    }
-  }
-
+function createInitialForm(profile: UserFitnessProfile): CheckInForm {
+  // Start with blank/default values — user fills from scratch each day
   return {
-    sleepDurationHours: latestLog?.sleepDurationHours ?? profile.targetSleepHours,
-    wakeTime: latestLog?.wakeTime ?? profile.wakeTime,
-    stress: latestLog?.stress ?? 4,
-    yesterdayWorkout: latestLog?.yesterdayWorkout ?? "",
-    lastSessionRpe: latestLog?.lastSessionRpe ?? 7,
-    subjectiveSoreness:
-      latestLog?.subjectiveSoreness ??
-      (Object.keys(statusByGroup).length > 0 ? sorenessToSubjective(statusByGroup) : 4),
-    statusByGroup,
+    sleepDurationHours: profile.targetSleepHours,
+    wakeTime: profile.wakeTime,
+    stress: 0,
+    yesterdayWorkout: "",
+    lastSessionRpe: 0,
+    subjectiveSoreness: 0,
+    statusByGroup: {},
   };
 }
 
@@ -92,9 +87,10 @@ export function DailyCheckInModal({
   const [internalOpen, setInternalOpen] = useState(false);
   const open = controlledOpen ?? internalOpen;
   const setOpen = onOpenChangeProp ?? setInternalOpen;
-  const [form, setForm] = useState<CheckInForm>(() => createInitialForm(profile, latestLog));
+  const [form, setForm] = useState<CheckInForm>(() => createInitialForm(profile));
   const [view, setView] = useState<"front" | "back">("front");
   const [hoveredGroupKey, setHoveredGroupKey] = useState<string | null>(null);
+  const nextCheckInDate = useMemo(() => buildNextCheckInDate(latestLog), [latestLog]);
 
   /** Wrapper so MuscleGroupChecklist can update statusByGroup and auto-sync subjectiveSoreness */
   const setStatusByGroup: React.Dispatch<React.SetStateAction<Record<string, StatusType | undefined>>> = (action) => {
@@ -114,7 +110,7 @@ export function DailyCheckInModal({
   const handleOpenChange = (nextOpen: boolean) => {
     setOpen(nextOpen);
     if (nextOpen) {
-      setForm(createInitialForm(profile, latestLog));
+      setForm(createInitialForm(profile));
     }
   };
 
@@ -124,7 +120,7 @@ export function DailyCheckInModal({
     ) as Record<MuscleGroup, SorenessLevel>;
 
     onSubmit({
-      date: new Date().toISOString(),
+      date: nextCheckInDate.toISOString(),
       sleepDurationHours: form.sleepDurationHours,
       wakeTime: form.wakeTime,
       stress: form.stress,
@@ -156,6 +152,18 @@ export function DailyCheckInModal({
             Update sleep, strain, and soreness inputs to refresh today&apos;s Go/No-Go state.
           </DialogDescription>
         </DialogHeader>
+
+        <div className="flex items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-sm text-blue-700">
+          <CalendarClock className="h-4 w-4" />
+          <span className="font-medium">
+            {nextCheckInDate.toLocaleDateString("en-US", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </span>
+        </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="space-y-5">
@@ -244,16 +252,6 @@ export function DailyCheckInModal({
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="yesterday-workout">Yesterday&apos;s Workout Notes</Label>
-                <Textarea
-                  id="yesterday-workout"
-                  value={form.yesterdayWorkout}
-                  onChange={(event) => setForm((prev) => ({ ...prev, yesterdayWorkout: event.target.value }))}
-                  placeholder="What did you train yesterday?"
-                  className="min-h-20 border-slate-300 bg-white"
-                />
-              </div>
 
               {/* ── Muscle Groups inline below sliders ── */}
               <div className="space-y-2 pt-1">

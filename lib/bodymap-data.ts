@@ -49,8 +49,7 @@ export const MUSCLE_GROUPS: MuscleGroupEntry[] = [
     key: "chest",
     label: "Chest",
     parts: {
-      front: ["front_030","front_031","front_038","front_039","front_046","front_047",
-              "front_056","front_057","front_058","front_063","front_064","front_079","front_080"],
+      front: ["front_002","front_003","front_046","front_047","front_056","front_057","front_058"],
       back:  [],
     },
   },
@@ -58,7 +57,7 @@ export const MUSCLE_GROUPS: MuscleGroupEntry[] = [
     key: "shoulders",
     label: "Shoulders",
     parts: {
-      front: ["front_002","front_003","front_022","front_023","front_040","front_042"],
+      front: ["front_022","front_023","front_040","front_042"],
       back:  ["back_016","back_017","back_026","back_027"],
     },
   },
@@ -95,7 +94,8 @@ export const MUSCLE_GROUPS: MuscleGroupEntry[] = [
     label: "Abs",
     parts: {
       front: ["front_012","front_013","front_024","front_025","front_028","front_029",
-              "front_034","front_035","front_044","front_045"],
+              "front_030","front_031","front_034","front_035","front_038","front_039",
+              "front_044","front_045","front_063","front_064","front_079","front_080"],
       back:  [],
     },
   },

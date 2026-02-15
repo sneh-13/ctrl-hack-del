@@ -52,10 +52,10 @@ const ChecklistRow = memo(function ChecklistRow({
         isHovered && !status
           ? "border-blue-200 bg-blue-50 text-blue-800"
           : isHovered && status
-          ? "border-blue-200 bg-blue-50 text-blue-900"
-          : status
-          ? "border-slate-200 bg-white text-slate-800"
-          : "border-transparent text-slate-600 hover:border-slate-200 hover:bg-slate-50 hover:text-slate-900",
+            ? "border-blue-200 bg-blue-50 text-blue-900"
+            : status
+              ? "border-slate-200 bg-white text-slate-800"
+              : "border-transparent text-slate-600 hover:border-slate-200 hover:bg-slate-50 hover:text-slate-900",
       )}
       // Mouse
       onMouseEnter={onHoverEnter}
@@ -102,19 +102,20 @@ export const MuscleGroupChecklist = memo(function MuscleGroupChecklist({
   setHoveredGroupKey,
 }: MuscleGroupChecklistProps) {
   /**
-   * Cycles: undefined → sore → recovering → recovered → undefined
-   * STATUS_CYCLE = [undefined, "sore", "recovering", "recovered"]
+   * Toggle: clicking a muscle marks it as "sore" (red).
+   * Clicking again clears it. "Recovering" state only comes from the
+   * recovery algorithm — never from manual input.
    */
   const cycleStatus = (key: string) => {
     setStatusByGroup((prev) => {
       const current = prev[key];
-      const idx = STATUS_CYCLE.indexOf(current);
-      const next = STATUS_CYCLE[(idx + 1) % STATUS_CYCLE.length];
       const updated = { ...prev };
-      if (next === undefined) {
+      if (current === "sore") {
+        // Already sore → clear it
         delete updated[key];
       } else {
-        updated[key] = next;
+        // None, recovering, or recovered → mark as sore
+        updated[key] = "sore";
       }
       return updated;
     });

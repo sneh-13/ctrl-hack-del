@@ -3,10 +3,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ActivitySquare, Moon, TrendingUp } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { DailyCheckInModal } from "@/components/aura/daily-checkin-modal";
-import { DailyReadinessHeatmap } from "@/components/aura/daily-readiness-heatmap";
+import { SleepDebtTracker } from "@/components/aura/sleep-debt-tracker";
 import { EnergyClock } from "@/components/aura/energy-clock";
 import { InteractiveBodyMap } from "@/components/aura/interactive-body-map";
 import { ReadinessScoreDisplay } from "@/components/aura/readiness-score-display";
@@ -14,6 +14,7 @@ import { SiteNav } from "@/components/site/site-nav";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { emptyMuscleSoreness } from "@/lib/mock-data";
+import { computeRecoveredSoreness } from "@/lib/recovery";
 import type { DailyLogs, ReadinessScore, UserFitnessProfile } from "@/types";
 
 interface GoNoGoDashboardProps {
@@ -50,7 +51,14 @@ export function GoNoGoDashboard({
   const [checkInOpen, setCheckInOpen] = useState(false);
   const latestLog = logs[0];
   const palette = statePalette[readiness.state];
+  const isCriticalFatigue = readiness.score < 10;
+  const directiveTitle = isCriticalFatigue ? "REST DAY REQUIRED" : palette.title;
+  const directiveSummary = isCriticalFatigue
+    ? "Body fatigue is critically high. Take a full rest day and prioritize sleep, hydration, and recovery."
+    : readiness.summary;
   const { data: session } = useSession();
+  const recoveredSoreness = useMemo(() => computeRecoveredSoreness(logs), [logs]);
+  const displaySoreness = session?.user?.id ? recoveredSoreness : emptyMuscleSoreness;
   const firstName = session?.user?.name?.split(" ")[0];
   const navCurrent = checkInOpen ? "history" : "dashboard";
 
@@ -97,8 +105,8 @@ export function GoNoGoDashboard({
             className={`rounded-2xl border px-5 py-4 ${palette.panel}`}
           >
             <p className="text-xs font-semibold tracking-[0.14em] text-slate-500 uppercase">Today&apos;s Readiness Directive</p>
-            <p className="mt-1 text-2xl text-slate-900">{palette.title}</p>
-            <p className="text-sm text-slate-600">{readiness.summary}</p>
+            <p className="mt-1 text-2xl text-slate-900">{directiveTitle}</p>
+            <p className="text-sm text-slate-600">{directiveSummary}</p>
           </motion.div>
         </AnimatePresence>
 
@@ -130,21 +138,21 @@ export function GoNoGoDashboard({
 
           <Card className="border-slate-200 bg-white shadow-sm lg:col-span-4">
             <CardHeader>
-              <CardTitle className="text-xl text-slate-900">24h Readiness Heatmap</CardTitle>
-              <CardDescription className="text-slate-500">Blue = cooler/recovered, red = higher fatigue load.</CardDescription>
+              <CardTitle className="text-xl text-slate-900">Sleep Debt Tracker</CardTitle>
+              <CardDescription className="text-slate-500">Accumulated sleep deficit over the past 7 days.</CardDescription>
             </CardHeader>
             <CardContent>
-              <DailyReadinessHeatmap hourlyPerformance={readiness.hourlyPerformance} />
+              <SleepDebtTracker logs={logs} targetSleepHours={profile.targetSleepHours} />
             </CardContent>
           </Card>
 
           <Card className="border-slate-200 bg-white shadow-sm lg:col-span-7">
             <CardHeader>
               <CardTitle className="text-xl text-slate-900">Interactive Body Map</CardTitle>
-              <CardDescription className="text-slate-500">Latest soreness regions from daily check-in.</CardDescription>
+              <CardDescription className="text-slate-500">Recovery state based on check-in history.</CardDescription>
             </CardHeader>
             <CardContent>
-              <InteractiveBodyMap value={latestLog?.muscleSoreness ?? emptyMuscleSoreness} interactive={false} />
+              <InteractiveBodyMap value={displaySoreness} interactive={false} />
             </CardContent>
           </Card>
 
@@ -190,6 +198,32 @@ export function GoNoGoDashboard({
               <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <p className="mb-1 text-xs font-semibold tracking-[0.1em] text-slate-500 uppercase">Yesterday&apos;s Session</p>
                 <p className="text-slate-700">{latestLog?.yesterdayWorkout ?? "No session logged"}</p>
+              </div>
+
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <p className="mb-2 text-xs font-semibold tracking-[0.1em] text-slate-500 uppercase">Muscle Recovery Status</p>
+                {(() => {
+                  const entries = Object.entries(displaySoreness)
+                    .filter(([, level]) => level > 0)
+                    .map(([muscle, level]) => ({ muscle: muscle.replace("_", " "), level }));
+                  return entries.length > 0 ? (
+                    <div className="flex flex-wrap gap-1.5">
+                      {entries.map(({ muscle, level }) => (
+                        <span
+                          key={muscle}
+                          className={`rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${level === 2
+                            ? "border border-rose-200 bg-rose-50 text-rose-700"
+                            : "border border-amber-200 bg-amber-50 text-amber-700"
+                            }`}
+                        >
+                          {muscle} {level === 2 ? "• Sore" : "• Recovering"}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-slate-400">All muscle groups recovered ✓</p>
+                  );
+                })()}
               </div>
 
               <p className="text-xs text-slate-500">

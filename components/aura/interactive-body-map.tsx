@@ -45,19 +45,15 @@ const BACK_H  = manifestData._meta.back_base_size[1];  // 1819
 // are intentionally skipped and receive no coloured overlay.
 
 const FRONT_MAP: Partial<Record<string, MuscleGroup>> = {
-  // shoulders  (y≈330–490, lateral of torso)
-  front_002: "shoulders", front_003: "shoulders",
+  // shoulders  (y≈330–420, lateral upper torso)
   front_022: "shoulders", front_023: "shoulders",
   front_040: "shoulders", front_042: "shoulders",
 
-  // chest  (y≈260–630, centre of torso)
-  front_030: "chest", front_031: "chest",
-  front_038: "chest", front_039: "chest",
+  // chest  (y≈245–486, centre upper torso)
+  front_002: "chest", front_003: "chest",
   front_046: "chest", front_047: "chest",
   front_056: "chest", front_057: "chest",
   front_058: "chest",
-  front_063: "chest", front_064: "chest",
-  front_079: "chest", front_080: "chest",
 
   // biceps  (y≈430–650, upper arm)
   front_006: "biceps", front_007: "biceps",
@@ -77,12 +73,16 @@ const FRONT_MAP: Partial<Record<string, MuscleGroup>> = {
   front_071: "forearms", front_072: "forearms",
   front_075: "forearms", front_076: "forearms",
 
-  // abs  (y≈580–870, centre torso)
+  // abs  (y≈500–996, centre torso)
+  front_030: "abs", front_031: "abs",
+  front_038: "abs", front_039: "abs",
   front_012: "abs", front_013: "abs",
   front_024: "abs", front_025: "abs",
   front_028: "abs", front_029: "abs",
   front_034: "abs", front_035: "abs",
   front_044: "abs", front_045: "abs",
+  front_063: "abs", front_064: "abs",
+  front_079: "abs", front_080: "abs",
 
   // quads  (y≈800–1260, thighs)
   front_004: "quads", front_005: "quads",
