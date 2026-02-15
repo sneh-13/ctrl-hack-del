@@ -29,7 +29,6 @@ interface DailyCheckInModalProps {
 
 type CheckInForm = {
   sleepDurationHours: number;
-  bedTime: string;
   wakeTime: string;
   stress: number;
   yesterdayWorkout: string;
@@ -41,7 +40,6 @@ type CheckInForm = {
 function createInitialForm(profile: UserFitnessProfile, latestLog?: DailyLogs): CheckInForm {
   return {
     sleepDurationHours: latestLog?.sleepDurationHours ?? profile.targetSleepHours,
-    bedTime: latestLog?.bedTime ?? "23:00",
     wakeTime: latestLog?.wakeTime ?? profile.wakeTime,
     stress: latestLog?.stress ?? 4,
     yesterdayWorkout: latestLog?.yesterdayWorkout ?? "",
@@ -80,7 +78,6 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
     onSubmit({
       date: new Date().toISOString(),
       sleepDurationHours: form.sleepDurationHours,
-      bedTime: form.bedTime,
       wakeTime: form.wakeTime,
       stress: form.stress,
       yesterdayWorkout: form.yesterdayWorkout,
@@ -138,17 +135,6 @@ export function DailyCheckInModal({ profile, latestLog, onSubmit }: DailyCheckIn
                   type="time"
                   value={form.wakeTime}
                   onChange={(event) => setForm((prev) => ({ ...prev, wakeTime: event.target.value }))}
-                  className="border-slate-300 bg-white"
-                />
-              </div>
-
-              <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="bed-time">Bed Time</Label>
-                <Input
-                  id="bed-time"
-                  type="time"
-                  value={form.bedTime}
-                  onChange={(event) => setForm((prev) => ({ ...prev, bedTime: event.target.value }))}
                   className="border-slate-300 bg-white"
                 />
               </div>
