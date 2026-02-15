@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Zap, Moon, Activity, Shield, Clock, BarChart3, Brain } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 import { SiteNav } from "@/components/site/site-nav";
 import { Button } from "@/components/ui/button";
@@ -241,6 +242,9 @@ function FeatureRow({
 /*  HOME PAGE                                                         */
 /* ================================================================== */
 export default function HomePage() {
+  const { status } = useSession();
+  const isAuthenticated = status === "authenticated";
+
   return (
     <div className="min-h-screen">
       {/* ── Nav ────────────────────────────────────────────────── */}
@@ -281,8 +285,8 @@ export default function HomePage() {
           <Reveal>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Button asChild className="h-12 rounded-xl bg-blue-600 px-7 text-base font-semibold text-white shadow-lg shadow-blue-600/25 hover:bg-blue-700">
-                <Link href="/dashboard">
-                  Open Dashboard
+                <Link href="/login">
+                  Sign In
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -317,7 +321,7 @@ export default function HomePage() {
           </Reveal>
           <Reveal>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
-              Most lifters follow a fixed schedule regardless of sleep debt, stress, or recovery state.
+              Most lifters follow a fixed schedule regardless of sleep quality, stress, or recovery state.
               Research shows that mistimed training increases injury risk by up to{" "}
               <span className="font-semibold text-slate-900">40%</span> and reduces strength output by{" "}
               <span className="font-semibold text-slate-900">15-20%</span>.
@@ -367,7 +371,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="font-display text-2xl font-semibold text-slate-900">Go / No-Go Readiness</h3>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  HRV trends, sleep debt, and yesterday&apos;s session RPE feed a daily readiness score that tells you
+                  HRV trends, sleep quality, and yesterday&apos;s session RPE feed a daily readiness score that tells you
                   exactly how hard to push — or when to pull back.
                 </p>
                 <div className="mt-6 space-y-2">
@@ -493,8 +497,8 @@ export default function HomePage() {
           <Reveal>
             <div className="mt-10">
               <Button asChild className="h-13 rounded-xl bg-blue-600 px-8 text-base font-semibold text-white shadow-lg shadow-blue-600/25 hover:bg-blue-700">
-                <Link href="/dashboard">
-                  Open Your Dashboard
+                <Link href="/login">
+                  Sign In
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -509,7 +513,11 @@ export default function HomePage() {
           <p className="font-display text-sm text-slate-400">© 2026 Aura. Bio-Adaptive Gym Optimizer.</p>
           <div className="flex gap-6 text-sm text-slate-400">
             <Link href="/about" className="hover:text-slate-600 transition-colors">About</Link>
-            <Link href="/dashboard" className="hover:text-slate-600 transition-colors">Dashboard</Link>
+            {isAuthenticated ? (
+              <Link href="/dashboard" className="hover:text-slate-600 transition-colors">Dashboard</Link>
+            ) : (
+              <span className="cursor-not-allowed text-slate-300">Dashboard</span>
+            )}
           </div>
         </div>
       </footer>

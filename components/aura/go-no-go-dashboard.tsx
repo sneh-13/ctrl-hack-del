@@ -7,7 +7,6 @@ import { useMemo, useState } from "react";
 
 import { CortexInsights } from "@/components/aura/cortex-insights";
 import { DailyCheckInModal } from "@/components/aura/daily-checkin-modal";
-import { SleepDebtTracker } from "@/components/aura/sleep-debt-tracker";
 import { EnergyClock } from "@/components/aura/energy-clock";
 import { InteractiveBodyMap } from "@/components/aura/interactive-body-map";
 import { ReadinessScoreDisplay } from "@/components/aura/readiness-score-display";
@@ -112,7 +111,7 @@ export function GoNoGoDashboard({
         </AnimatePresence>
 
         <div className="grid gap-4 lg:grid-cols-12">
-          <Card className="border-slate-200 bg-white shadow-sm lg:col-span-4">
+          <Card className="border-slate-200 bg-white shadow-sm lg:col-span-6">
             <CardHeader>
               <CardTitle className="text-xl text-slate-900">Go/No-Go Indicator</CardTitle>
               <CardDescription className="text-slate-500">Glance decision in under three seconds.</CardDescription>
@@ -122,7 +121,7 @@ export function GoNoGoDashboard({
             </CardContent>
           </Card>
 
-          <Card className="border-slate-200 bg-white shadow-sm lg:col-span-4">
+          <Card className="border-slate-200 bg-white shadow-sm lg:col-span-6">
             <CardHeader>
               <CardTitle className="text-xl text-slate-900">Energy Clock</CardTitle>
               <CardDescription className="text-slate-500">Prime lifting window anchored to wake time.</CardDescription>
@@ -134,16 +133,6 @@ export function GoNoGoDashboard({
                 peakEndOffsetHours={readiness.peakWindow.endHour}
                 hourlyPerformance={readiness.hourlyPerformance}
               />
-            </CardContent>
-          </Card>
-
-          <Card className="border-slate-200 bg-white shadow-sm lg:col-span-4">
-            <CardHeader>
-              <CardTitle className="text-xl text-slate-900">Sleep Debt Tracker</CardTitle>
-              <CardDescription className="text-slate-500">Accumulated sleep deficit over the past 7 days.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <SleepDebtTracker logs={logs} targetSleepHours={profile.targetSleepHours} />
             </CardContent>
           </Card>
 
@@ -194,11 +183,6 @@ export function GoNoGoDashboard({
                     })}
                   </p>
                 </div>
-              </div>
-
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <p className="mb-1 text-xs font-semibold tracking-[0.1em] text-slate-500 uppercase">Yesterday&apos;s Session</p>
-                <p className="text-slate-700">{latestLog?.yesterdayWorkout ?? "No session logged"}</p>
               </div>
 
               <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">

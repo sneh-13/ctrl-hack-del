@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
 import {
   ArrowRight,
   Clock3,
@@ -44,6 +45,9 @@ function Reveal({ children, className = "" }: { children: React.ReactNode; class
 /*  ABOUT PAGE                                                        */
 /* ================================================================== */
 export default function AboutPage() {
+  const { status } = useSession();
+  const isAuthenticated = status === "authenticated";
+
   return (
     <div className="min-h-screen">
       {/* ── Nav ─────────────────────────────────────────────── */}
@@ -136,7 +140,7 @@ export default function AboutPage() {
                 <h3 className="mt-4 font-display text-xl font-semibold text-slate-900">Muscle Loss Guardrails</h3>
                 <p className="mt-2 text-sm text-slate-500">Preserving lean mass during deficits</p>
                 <p className="mt-4 text-sm leading-relaxed text-slate-600">
-                  When sleep debt and stress suggest catabolic risk, Aura flags it and adjusts training load.
+                  When sleep disruption and stress suggest catabolic risk, Aura flags it and adjusts training load.
                   Soreness is tracked across{" "}
                   <span className="font-semibold text-slate-900">13 muscle groups</span> for
                   smarter recovery routing.
@@ -225,14 +229,14 @@ export default function AboutPage() {
           </Reveal>
           <Reveal>
             <p className="mx-auto mt-4 max-w-xl text-base text-slate-600">
-              Open your dashboard and let your biology drive the session.
+              Sign in and let your biology drive the session.
             </p>
           </Reveal>
           <Reveal>
             <div className="mt-8">
               <Button asChild className="h-12 rounded-xl bg-blue-600 px-7 text-base font-semibold text-white shadow-lg shadow-blue-600/25 hover:bg-blue-700">
-                <Link href="/dashboard">
-                  Open Your Dashboard
+                <Link href="/login">
+                  Sign In
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -247,7 +251,11 @@ export default function AboutPage() {
           <p className="font-display text-sm text-slate-400">© 2026 Aura. Bio-Adaptive Gym Optimizer.</p>
           <div className="flex gap-6 text-sm text-slate-400">
             <Link href="/" className="transition-colors hover:text-slate-600">Home</Link>
-            <Link href="/dashboard" className="transition-colors hover:text-slate-600">Dashboard</Link>
+            {isAuthenticated ? (
+              <Link href="/dashboard" className="transition-colors hover:text-slate-600">Dashboard</Link>
+            ) : (
+              <span className="cursor-not-allowed text-slate-300">Dashboard</span>
+            )}
           </div>
         </div>
       </footer>

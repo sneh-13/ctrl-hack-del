@@ -52,7 +52,23 @@ export function SiteNav({ current, className, suppressActive = false }: SiteNavP
 
       <div className="flex items-center gap-2">
         {items.map((item) => {
+          const requiresAuth = item.key === "dashboard" || item.key === "coach";
+          const locked = !session && requiresAuth;
           const active = !suppressActive && item.key === current;
+
+          if (locked) {
+            return (
+              <span
+                key={item.key}
+                aria-disabled="true"
+                title="Sign in to access"
+                className="cursor-not-allowed rounded-lg border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-medium tracking-[0.02em] text-slate-400 md:text-sm"
+              >
+                {item.label}
+              </span>
+            );
+          }
+
           return (
             <Link
               key={item.key}
