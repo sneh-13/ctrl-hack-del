@@ -45,6 +45,9 @@ export interface DailyLogs {
   lastSessionRpe: number;
   subjectiveSoreness: number;
   muscleSoreness: Record<MuscleGroup, SorenessLevel>;
+  readinessScore?: number;
+  readinessState?: ReadinessState;
+  profileSnapshot?: UserFitnessProfile;
 }
 
 export interface ReadinessScore {

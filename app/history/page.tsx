@@ -30,6 +30,13 @@ function topSoreMuscles(log: DailyLogs): string {
   return top.length > 0 ? top.join(", ") : "None";
 }
 
+function readinessPillClass(state?: DailyLogs["readinessState"]): string {
+  if (state === "green") return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  if (state === "yellow") return "border-amber-200 bg-amber-50 text-amber-700";
+  if (state === "red") return "border-rose-200 bg-rose-50 text-rose-700";
+  return "border-slate-200 bg-slate-100 text-slate-500";
+}
+
 export default function HistoryPage() {
   const { status } = useSession();
   const [logs, setLogs] = useState<DailyLogs[]>([]);
@@ -74,9 +81,17 @@ export default function HistoryPage() {
     if (logs.length === 0) return null;
     const avgSleep = logs.reduce((sum, log) => sum + log.sleepDurationHours, 0) / logs.length;
     const avgStress = logs.reduce((sum, log) => sum + log.stress, 0) / logs.length;
+    const readinessLogs = logs.filter((log) => typeof log.readinessScore === "number");
+    const avgReadiness = readinessLogs.length
+      ? (
+          readinessLogs.reduce((sum, log) => sum + (log.readinessScore ?? 0), 0) /
+          readinessLogs.length
+        ).toFixed(0)
+      : null;
     return {
       avgSleep: avgSleep.toFixed(1),
       avgStress: avgStress.toFixed(1),
+      avgReadiness,
       days: logs.length,
     };
   }, [logs]);
@@ -114,7 +129,7 @@ export default function HistoryPage() {
         )}
 
         {status === "authenticated" && historySummary && (
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-4">
             <Card className="border-slate-200 bg-white shadow-sm">
               <CardHeader className="pb-2">
                 <CardDescription className="text-slate-500">Saved days</CardDescription>
@@ -131,6 +146,14 @@ export default function HistoryPage() {
               <CardHeader className="pb-2">
                 <CardDescription className="text-slate-500">Average stress</CardDescription>
                 <CardTitle className="text-2xl text-slate-900">{historySummary.avgStress}/10</CardTitle>
+              </CardHeader>
+            </Card>
+            <Card className="border-slate-200 bg-white shadow-sm">
+              <CardHeader className="pb-2">
+                <CardDescription className="text-slate-500">Average readiness</CardDescription>
+                <CardTitle className="text-2xl text-slate-900">
+                  {historySummary.avgReadiness ? `${historySummary.avgReadiness}/100` : "--"}
+                </CardTitle>
               </CardHeader>
             </Card>
           </div>
@@ -195,6 +218,22 @@ export default function HistoryPage() {
                     <p className="text-sm font-medium text-slate-900">{topSoreMuscles(log)}</p>
                   </div>
 
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                    <p className="mb-1 text-xs font-semibold tracking-[0.1em] text-slate-500 uppercase">
+                      Readiness
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-xl font-semibold text-slate-900">
+                        {typeof log.readinessScore === "number" ? `${log.readinessScore}/100` : "--"}
+                      </p>
+                      <span
+                        className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold tracking-[0.08em] uppercase ${readinessPillClass(log.readinessState)}`}
+                      >
+                        {log.readinessState ?? "n/a"}
+                      </span>
+                    </div>
+                  </div>
+
                   <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 md:col-span-3">
                     <p className="mb-1 flex items-center gap-2 text-xs font-semibold tracking-[0.1em] text-slate-500 uppercase">
                       <Dumbbell className="h-4 w-4 text-blue-600" />
@@ -202,6 +241,18 @@ export default function HistoryPage() {
                     </p>
                     <p className="text-slate-700">{log.yesterdayWorkout || "No workout notes provided."}</p>
                   </div>
+
+                  {log.profileSnapshot && (
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 md:col-span-3">
+                      <p className="mb-1 text-xs font-semibold tracking-[0.1em] text-slate-500 uppercase">
+                        Profile Snapshot
+                      </p>
+                      <p className="text-slate-700">
+                        {log.profileSnapshot.experienceLevel} • {log.profileSnapshot.trainingGoal} •{" "}
+                        {log.profileSnapshot.workoutSplit} • {log.profileSnapshot.chronotype}
+                      </p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}

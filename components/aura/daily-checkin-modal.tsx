@@ -44,13 +44,14 @@ type CheckInForm = {
 function levelToStatus(level: SorenessLevel): StatusType | undefined {
   if (level === 2) return "sore";
   if (level === 1) return "recovering";
-  return undefined;
+  return "recovered";
 }
 
 /** Map StatusType → SorenessLevel for DailyLogs submission */
 function statusToLevel(status: StatusType | undefined): SorenessLevel {
   if (status === "sore") return 2;
   if (status === "recovering") return 1;
+  if (status === "recovered") return 0;
   return 0;
 }
 
@@ -59,16 +60,19 @@ function createInitialForm(profile: UserFitnessProfile, latestLog?: DailyLogs): 
   if (latestLog?.muscleSoreness) {
     for (const [key, level] of Object.entries(latestLog.muscleSoreness)) {
       const status = levelToStatus(level as SorenessLevel);
-      if (status) statusByGroup[key] = status;
+      if (status !== undefined) statusByGroup[key] = status;
     }
   }
+
   return {
     sleepDurationHours: latestLog?.sleepDurationHours ?? profile.targetSleepHours,
     wakeTime: latestLog?.wakeTime ?? profile.wakeTime,
     stress: latestLog?.stress ?? 4,
     yesterdayWorkout: latestLog?.yesterdayWorkout ?? "",
     lastSessionRpe: latestLog?.lastSessionRpe ?? 7,
-    subjectiveSoreness: latestLog?.subjectiveSoreness ?? 4,
+    subjectiveSoreness:
+      latestLog?.subjectiveSoreness ??
+      (Object.keys(statusByGroup).length > 0 ? sorenessToSubjective(statusByGroup) : 4),
     statusByGroup,
   };
 }
@@ -237,6 +241,17 @@ export function DailyCheckInModal({
                       subjectiveSoreness: value[0] ?? 0,
                     }))
                   }
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="yesterday-workout">Yesterday&apos;s Workout Notes</Label>
+                <Textarea
+                  id="yesterday-workout"
+                  value={form.yesterdayWorkout}
+                  onChange={(event) => setForm((prev) => ({ ...prev, yesterdayWorkout: event.target.value }))}
+                  placeholder="What did you train yesterday?"
+                  className="min-h-20 border-slate-300 bg-white"
                 />
               </div>
 

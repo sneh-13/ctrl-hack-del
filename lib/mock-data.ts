@@ -182,6 +182,24 @@ function getReadinessState(score: number): ReadinessState {
   return "red";
 }
 
+function averageMuscleSoreness(log: DailyLogs): number {
+  const total = muscleGroups.reduce((sum, group) => sum + (log.muscleSoreness[group] ?? 0), 0);
+  return total / muscleGroups.length;
+}
+
+function buildRecoveryTrendPenalty(current: DailyLogs, history: DailyLogs[]): number {
+  const recent = history.filter((item) => item.date !== current.date).slice(0, 3);
+  if (recent.length === 0) return 0;
+
+  const weights = [0.65, 0.45, 0.25];
+  const weightedLoad = recent.reduce(
+    (sum, item, index) => sum + averageMuscleSoreness(item) * (weights[index] ?? 0),
+    0
+  );
+
+  return weightedLoad * 2.2;
+}
+
 export function buildHourlyPerformance(
   wakeTime: string,
   chronotype: Chronotype,
@@ -204,14 +222,25 @@ export function buildHourlyPerformance(
 export function buildReadinessScore(
   profile: UserFitnessProfile,
   log: DailyLogs,
+  history: DailyLogs[] = [],
 ): ReadinessScore {
   const sleepPenalty = Math.max(0, profile.targetSleepHours - log.sleepDurationHours) * 10;
   const stressPenalty = log.stress * 4;
   const exertionPenalty = Math.max(0, log.lastSessionRpe - 7) * 3;
   const sorenessPenalty = log.subjectiveSoreness * 2.3;
+  const musclePenalty = averageMuscleSoreness(log) * 5.5;
+  const recoveryTrendPenalty = buildRecoveryTrendPenalty(log, history);
 
   const score = clamp(
-    Math.round(96 - sleepPenalty - stressPenalty - exertionPenalty - sorenessPenalty),
+    Math.round(
+      96 -
+        sleepPenalty -
+        stressPenalty -
+        exertionPenalty -
+        sorenessPenalty -
+        musclePenalty -
+        recoveryTrendPenalty
+    ),
     0,
     100,
   );

@@ -30,6 +30,9 @@ function normalizeLog(log: DailyLogDocumentShape): DailyLogs {
     lastSessionRpe: log.lastSessionRpe,
     subjectiveSoreness: log.subjectiveSoreness,
     muscleSoreness: log.muscleSoreness,
+    readinessScore: log.readinessScore,
+    readinessState: log.readinessState,
+    profileSnapshot: log.profileSnapshot,
   };
 }
 
@@ -64,7 +67,13 @@ export async function POST(req: NextRequest) {
     typeof payload.stress !== "number" ||
     typeof payload.lastSessionRpe !== "number" ||
     typeof payload.subjectiveSoreness !== "number" ||
-    typeof payload.muscleSoreness !== "object"
+    typeof payload.muscleSoreness !== "object" ||
+    (payload.readinessScore !== undefined && typeof payload.readinessScore !== "number") ||
+    (payload.readinessState !== undefined &&
+      payload.readinessState !== "green" &&
+      payload.readinessState !== "yellow" &&
+      payload.readinessState !== "red") ||
+    (payload.profileSnapshot !== undefined && typeof payload.profileSnapshot !== "object")
   ) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
@@ -91,6 +100,9 @@ export async function POST(req: NextRequest) {
         lastSessionRpe: payload.lastSessionRpe,
         subjectiveSoreness: payload.subjectiveSoreness,
         muscleSoreness: payload.muscleSoreness,
+        readinessScore: payload.readinessScore,
+        readinessState: payload.readinessState,
+        profileSnapshot: payload.profileSnapshot,
       },
     },
     {

@@ -13,6 +13,9 @@ export interface IDailyLog extends Document {
   lastSessionRpe: number;
   subjectiveSoreness: number;
   muscleSoreness: MuscleSorenessMap;
+  readinessScore?: number;
+  readinessState?: "green" | "yellow" | "red";
+  profileSnapshot?: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -29,6 +32,9 @@ const DailyLogSchema = new Schema<IDailyLog>(
     lastSessionRpe: { type: Number, required: true },
     subjectiveSoreness: { type: Number, required: true },
     muscleSoreness: { type: Schema.Types.Mixed, required: true },
+    readinessScore: { type: Number },
+    readinessState: { type: String, enum: ["green", "yellow", "red"] },
+    profileSnapshot: { type: Schema.Types.Mixed },
   },
   { timestamps: true }
 );

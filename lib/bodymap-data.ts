@@ -10,26 +10,29 @@ import manifestData from "@/public/bodymap/manifest.json";
 
 // ─── Status types ─────────────────────────────────────────────────────────────
 
-export type StatusType = "sore" | "recovering";
+export type StatusType = "sore" | "recovering" | "recovered";
 
 export const STATUS_COLOR: Record<StatusType, string> = {
   sore:       "rgba(225, 29, 72, 0.72)",
   recovering: "rgba(217, 119, 6, 0.72)",
+  recovered:  "rgba(22, 163, 74, 0.72)",
 };
 
 export const STATUS_LABEL: Record<StatusType, string> = {
   sore:       "Sore",
   recovering: "Recovering",
+  recovered:  "Recovered",
 };
 
 /** Blue preview shown while hovering over a checklist row. */
 export const PREVIEW_COLOR = "rgba(59, 130, 246, 0.48)";
 
-/** Cycle order: none → sore → recovering → none */
+/** Cycle order: none → sore → recovering → recovered → none */
 export const STATUS_CYCLE: Array<StatusType | undefined> = [
   undefined,
   "sore",
   "recovering",
+  "recovered",
 ];
 
 // ─── Muscle group definition ──────────────────────────────────────────────────
