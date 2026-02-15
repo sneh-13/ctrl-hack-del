@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
 
-// This endpoint returns mock analytics data.
-// When Snowflake is connected, it will query real aggregated training data.
-// For now, we generate realistic sample data so the assistant can reference trends.
-
 interface TrendData {
     readinessByDay: { day: string; avgScore: number }[];
     sleepVsReadiness: { sleepHours: number; readinessScore: number }[];
@@ -19,8 +15,8 @@ function generateMockTrends(): TrendData {
             day,
             avgScore: Math.round(55 + Math.random() * 30),
         })),
-        sleepVsReadiness: Array.from({ length: 14 }, (_, i) => ({
-            sleepHours: 5 + Math.random() * 4,
+        sleepVsReadiness: Array.from({ length: 14 }, () => ({
+            sleepHours: +(5 + Math.random() * 4).toFixed(1),
             readinessScore: Math.round(30 + (5 + Math.random() * 4) * 8 + Math.random() * 10),
         })),
         sorenessFrequency: [
@@ -40,44 +36,128 @@ function generateMockTrends(): TrendData {
     };
 }
 
-// Try Snowflake query, fall back to mock data
 async function getTrendsData(): Promise<TrendData> {
     try {
-        // Only attempt Snowflake if credentials are configured
-        if (
-            process.env.SNOWFLAKE_ACCOUNT &&
-            process.env.SNOWFLAKE_PASSWORD &&
-            process.env.SNOWFLAKE_PASSWORD !== "YOUR_PASSWORD_HERE"
-        ) {
-            const { snowflakeQuery, initSnowflakeSchema } = await import("@/lib/snowflake");
+        const { isSnowflakeConfigured, snowflakeQuery, initSnowflakeSchema } =
+            await import("@/lib/snowflake");
 
-            // Ensure schema exists
-            await initSnowflakeSchema();
-
-            // Try to query real data
-            const logs = await snowflakeQuery<{
-                LOG_DATE: string;
-                SLEEP_HOURS: number;
-                READINESS_SCORE: number;
-                STRESS: number;
-            }>(
-                `SELECT LOG_DATE, SLEEP_HOURS, READINESS_SCORE, STRESS
-         FROM AURA.PUBLIC.DAILY_LOGS
-         ORDER BY LOG_DATE DESC
-         LIMIT 30`
-            );
-
-            if (logs.length > 0) {
-                // Build real trends from Snowflake data
-                // For now, return mock — real queries will be added as data is collected
-                console.log(`[Snowflake] Found ${logs.length} log records`);
-            }
+        if (!isSnowflakeConfigured()) {
+            console.log("[Analytics] Snowflake not configured, using mock data");
+            return generateMockTrends();
         }
-    } catch (err) {
-        console.log("[Snowflake] Not available, using mock data:", (err as Error).message);
-    }
 
-    return generateMockTrends();
+        await initSnowflakeSchema();
+
+        // --- 1. Readiness by day of week ---
+        const readinessByDayRaw = await snowflakeQuery<{
+            DOW: string;
+            AVG_SCORE: number;
+        }>(
+            `SELECT DAYNAME(LOG_DATE) AS DOW, ROUND(AVG(READINESS_SCORE)) AS AVG_SCORE
+       FROM AURA.PUBLIC.DAILY_LOGS
+       WHERE READINESS_SCORE IS NOT NULL
+       GROUP BY DAYNAME(LOG_DATE)
+       ORDER BY MIN(DAYOFWEEK(LOG_DATE))`
+        );
+
+        // --- 2. Sleep vs readiness scatter ---
+        const sleepVsReadinessRaw = await snowflakeQuery<{
+            SLEEP_HOURS: number;
+            READINESS_SCORE: number;
+        }>(
+            `SELECT SLEEP_HOURS, READINESS_SCORE
+       FROM AURA.PUBLIC.DAILY_LOGS
+       WHERE SLEEP_HOURS IS NOT NULL AND READINESS_SCORE IS NOT NULL
+       ORDER BY LOG_DATE DESC
+       LIMIT 30`
+        );
+
+        // --- 3. Soreness frequency (parse VARIANT column) ---
+        const sorenessRaw = await snowflakeQuery<{
+            MUSCLE: string;
+            FREQ: number;
+        }>(
+            `SELECT f.key AS MUSCLE, COUNT(*) AS FREQ
+       FROM AURA.PUBLIC.DAILY_LOGS,
+            LATERAL FLATTEN(input => MUSCLE_SORENESS) f
+       WHERE f.value::STRING IN ('moderate', 'sore')
+       GROUP BY f.key
+       ORDER BY FREQ DESC
+       LIMIT 10`
+        );
+
+        // --- 4. Weekly volume ---
+        const weeklyVolumeRaw = await snowflakeQuery<{
+            WEEK_NUM: string;
+            SESSIONS: number;
+            AVG_RPE: number;
+        }>(
+            `SELECT CONCAT('W', WEEKISO(LOG_DATE)) AS WEEK_NUM,
+              COUNT(*) AS SESSIONS,
+              ROUND(AVG(LAST_SESSION_RPE), 1) AS AVG_RPE
+       FROM AURA.PUBLIC.DAILY_LOGS
+       WHERE LAST_SESSION_RPE IS NOT NULL
+       GROUP BY WEEKISO(LOG_DATE), YEAR(LOG_DATE)
+       ORDER BY YEAR(LOG_DATE) DESC, WEEKISO(LOG_DATE) DESC
+       LIMIT 8`
+        );
+
+        // Check if we got enough data from Snowflake
+        const hasData =
+            readinessByDayRaw.length > 0 ||
+            sleepVsReadinessRaw.length > 0 ||
+            sorenessRaw.length > 0 ||
+            weeklyVolumeRaw.length > 0;
+
+        if (!hasData) {
+            console.log("[Analytics] Snowflake connected but no data yet, using mock");
+            return generateMockTrends();
+        }
+
+        console.log(`[Analytics] Snowflake data: ${readinessByDayRaw.length} days, ${sleepVsReadinessRaw.length} sleep records, ${sorenessRaw.length} soreness entries, ${weeklyVolumeRaw.length} weeks`);
+
+        // Map day abbreviations
+        const dayMap: Record<string, string> = {
+            Mon: "Mon", Tue: "Tue", Wed: "Wed", Thu: "Thu",
+            Fri: "Fri", Sat: "Sat", Sun: "Sun",
+        };
+
+        const mock = generateMockTrends();
+
+        return {
+            readinessByDay: readinessByDayRaw.length > 0
+                ? readinessByDayRaw.map((r) => ({
+                    day: dayMap[r.DOW] || r.DOW,
+                    avgScore: r.AVG_SCORE,
+                }))
+                : mock.readinessByDay,
+
+            sleepVsReadiness: sleepVsReadinessRaw.length > 0
+                ? sleepVsReadinessRaw.map((r) => ({
+                    sleepHours: r.SLEEP_HOURS,
+                    readinessScore: r.READINESS_SCORE,
+                }))
+                : mock.sleepVsReadiness,
+
+            sorenessFrequency: sorenessRaw.length > 0
+                ? sorenessRaw.map((r) => ({
+                    muscle: r.MUSCLE,
+                    frequency: r.FREQ,
+                }))
+                : mock.sorenessFrequency,
+
+            weeklyVolume: weeklyVolumeRaw.length > 0
+                ? weeklyVolumeRaw.reverse().map((r) => ({
+                    week: r.WEEK_NUM,
+                    sessions: r.SESSIONS,
+                    avgRpe: r.AVG_RPE,
+                }))
+                : mock.weeklyVolume,
+        };
+    } catch (err) {
+        console.log("[Analytics] Snowflake query failed, using mock data:", (err as Error).message);
+        return generateMockTrends();
+    }
 }
 
 export async function GET() {

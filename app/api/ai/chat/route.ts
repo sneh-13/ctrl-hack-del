@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { geminiGenerate } from "@/lib/gemini";
+import { getCortexInsights } from "@/lib/cortex";
 
 const AURA_SYSTEM_PROMPT = `You are Aura, a virtual AI fitness coach and assistant built into the Aura Bio-Adaptive Gym Optimizer app.
 
@@ -69,6 +70,16 @@ LATEST LOG:
 - Sore muscles: ${JSON.stringify(latestLog?.muscleSoreness ?? {})}
 - Yesterday's workout: ${latestLog?.yesterdayWorkout ?? "none logged"}`;
 
+        // Fetch Cortex insights (Snowflake/Gemini)
+        const insights = await getCortexInsights();
+        const insightsContext = insights ? `
+AI TRAINING INSIGHTS (Use these to guide your advice, but distinguish from current status):
+- TOMORROW'S Readiness Forecast: ${insights.readinessForecast.predictedScore ?? "N/A"}/100 (${insights.readinessForecast.trend}, confidence: ${insights.readinessForecast.confidence})
+- Overtraining Risk: ${insights.overtrainingRisk.level.toUpperCase()} (${insights.overtrainingRisk.signal})
+- Recovery Strategy: ${insights.recoveryRecommendation}
+- Peak Training Day: ${insights.optimalTrainingDay.day} (${insights.optimalTrainingDay.reason})
+` : "";
+
         // Build conversation history for multi-turn context
         const historyContext = (history || [])
             .slice(-6) // Keep last 6 messages for context
@@ -76,6 +87,7 @@ LATEST LOG:
             .join("\n");
 
         const fullPrompt = `${contextBlock}
+${insightsContext}
 
 ${historyContext ? `CONVERSATION SO FAR:\n${historyContext}\n` : ""}
 User: ${message}

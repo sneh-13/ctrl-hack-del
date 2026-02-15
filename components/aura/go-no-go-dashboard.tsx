@@ -5,6 +5,7 @@ import { ActivitySquare, Moon, TrendingUp } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useMemo, useState } from "react";
 
+import { CortexInsights } from "@/components/aura/cortex-insights";
 import { DailyCheckInModal } from "@/components/aura/daily-checkin-modal";
 import { SleepDebtTracker } from "@/components/aura/sleep-debt-tracker";
 import { EnergyClock } from "@/components/aura/energy-clock";
@@ -231,6 +232,11 @@ export function GoNoGoDashboard({
               </p>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Snowflake Cortex AI Insights */}
+        <div className="mt-6">
+          <CortexInsights />
         </div>
       </div>
     </div>

@@ -112,6 +112,35 @@ export async function POST(req: NextRequest) {
     }
   ).lean<DailyLogDocumentShape>();
 
+  // Fire-and-forget sync to Snowflake (non-blocking)
+  import("@/lib/snowflake").then(({ syncLogToSnowflake, syncProfileToSnowflake }) => {
+    syncLogToSnowflake({
+      userId: session.user!.id,
+      date: dayKey,
+      sleepHours: payload.sleepDurationHours,
+      wakeTime: payload.wakeTime,
+      stress: payload.stress,
+      lastSessionRpe: payload.lastSessionRpe,
+      subjectiveSoreness: payload.subjectiveSoreness,
+      yesterdayWorkout: payload.yesterdayWorkout ?? "",
+      muscleSoreness: payload.muscleSoreness,
+      readinessScore: payload.readinessScore,
+      readinessState: payload.readinessState,
+    });
+
+    // Also sync profile if snapshot is included
+    if (payload.profileSnapshot) {
+      syncProfileToSnowflake({
+        userId: session.user!.id,
+        chronotype: payload.profileSnapshot.chronotype,
+        experienceLevel: payload.profileSnapshot.experienceLevel,
+        trainingGoal: payload.profileSnapshot.trainingGoal,
+        workoutSplit: payload.profileSnapshot.workoutSplit,
+        wakeTime: payload.profileSnapshot.wakeTime,
+      });
+    }
+  }).catch((err) => console.error("[Snowflake] Import failed:", err));
+
   return NextResponse.json({ log: normalizeLog(saved) }, { status: 201 });
 }
 
